@@ -1,10 +1,15 @@
 .venv*/
-data/
+data/kitti_raw/
+data/kitti_yolo/
+data/kitti_mini*/
+models/*.onnx
+runs/
 *.pt
 *.onnx
 *.hef
 *.har
 *.whl
 __pycache__/
-runs/
 benchmarks/raw/
+# benchmarks/results.jsonl 은 측정 원본이므로 반드시 커밋한다
+!benchmarks/results.jsonl

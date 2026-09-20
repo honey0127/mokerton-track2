@@ -1,0 +1,11 @@
+# Ultralytics 데이터셋 설정 — scripts/kitti_to_yolo.py 출력 전용
+# val 은 자체 홀드아웃(500장)이다. 공식 점수는 eval_val 1000장으로만 낸다.
+path: ../data/kitti_yolo
+train: images/train
+val: images/holdout
+test: images/eval_val
+
+names:
+  0: Car
+  1: Pedestrian
+  2: Cyclist

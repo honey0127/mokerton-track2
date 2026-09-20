@@ -1,0 +1,10 @@
+# .venv-train 전용. .venv-hailo(DFC)와 절대 합치지 않는다 (numpy/protobuf 충돌).
+ultralytics>=8.4
+torch>=2.4
+torchvision
+onnx>=1.16
+onnxruntime>=1.18
+opencv-python-headless
+numpy
+psutil
+thop
