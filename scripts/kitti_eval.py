@@ -1,258 +1,168 @@
-"""KITTI 2D Object Detection — Moderate AP40 평가.
+"""KITTI 2D Object Detection — Moderate AP40 평가 (공식 판정 엔진).
 
-공식 eval.cpp 의 판정 규칙을 재현한다. Ultralytics 의 val() 로는 이 수치를 낼 수 없다.
+판정 엔진: third_party/kitti_object_eval_python
+  OpenPCDet 에 포함된 공식 평가 포트(traveller59, numba). 공식 C++ devkit(evaluate_object.cpp)을
+  줄 단위로 옮긴 코드다. 2026-10-06 합성 데이터 5세트(각 1000장)에서 공식 C++ 과
+  9칸(3클래스 x 3난이도) 모두 소수점 둘째 자리까지 일치했다.
+  이전 자체 구현(예측 우선 greedy 매칭)은 같은 데이터에서 칸별 최대 1.5점 차이가 나서 교체했다.
 
-규칙 (놓치면 AP가 부당하게 낮게 나온다):
-  1. 난이도 필터 — Moderate: 높이>=25px, occlusion<=1, truncation<=0.30
-  2. 이웃 클래스 무시 — Car 판정에서 Van, Pedestrian 판정에서 Person_sitting 은
-     GT로 세지도 않고, 거기 맞은 예측을 FP로 세지도 않는다.
-  3. 난이도 미달 GT — FN 으로 세지 않는다. 거기 맞은 예측도 FP가 아니다.
-  4. DontCare 영역 — 예측 박스 면적 대비 교집합(IoA)>=0.5 면 그 예측을 버린다.
-  5. 높이 미달 예측 — FP 로 세지 않고 버린다.
-  6. IoU 임계값 — Car 0.70, Pedestrian 0.50, Cyclist 0.50
-  7. AP40 — recall 1/40..40/40 의 40개 지점에서 보간 precision 평균
+공식 규칙 요약 (보고서 '평가 방법' 절에 그대로 쓸 수 있다):
+  1. 난이도 — Moderate: 높이>=25px, occlusion<=1, truncation<=0.30
+  2. 이웃 클래스 — Car 판정의 Van, Pedestrian 판정의 Person_sitting 은 FN 도 FP 도 아니다
+  3. 난이도 미달 GT 는 FN 이 아니고, 거기 맞은 예측도 FP 가 아니다
+  4. 높이 25px 미만 예측은 FP 로 세지 않는다
+  5. DontCare — '예측 박스 면적 대비 겹침'이 클래스 IoU 임계(Car 0.7 / Ped·Cyc 0.5)를 넘으면 버린다
+  6. 매칭 — GT 마다, 임계 IoU 를 넘는 예측 중 '겹침이 가장 큰 것'을 고른다 (점수 순이 아니다)
+  7. AP40 — TP 점수로 임계값 41개를 고르고, 임계값마다 TP/FP 를 다시 세어 1~40번째 정밀도 평균
 
   python scripts/kitti_eval.py --gt data/kitti_raw/training/label_2 \
-      --pred runs/pred_eval_val --split splits/eval_val.txt
+      --pred runs/pred_best_1280x384_op13_fp32 --split splits/eval_val.txt --tag best_1280x384_op13_fp32
   python scripts/kitti_eval.py --selftest
 """
 from __future__ import annotations
-import argparse, json
+import argparse, json, sys, time, warnings
 from pathlib import Path
-import sys
+
+ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(Path(__file__).parent))
-from common import CLASSES, NEIGHBOR, IOU_THR, DIFFICULTY  # noqa: E402
+sys.path.insert(0, str(ROOT / "third_party"))
+from common import CLASSES, jsonl_append  # noqa: E402
 
-import numpy as np
+import numpy as np  # noqa: E402
 
-DC_IOA = 0.5   # DontCare 판정 임계
+warnings.filterwarnings("ignore", module="numba")
+from kitti_object_eval_python import eval as E            # noqa: E402
+from kitti_object_eval_python import kitti_common as KC   # noqa: E402
 
-
-def read_kitti(path, with_score=False):
-    """KITTI 라벨/예측 파일 -> list of dict"""
-    out = []
-    p = Path(path)
-    if not p.exists():
-        return out
-    for ln in p.read_text().splitlines():
-        f = ln.split()
-        if len(f) < 15:
-            continue
-        d = {"type": f[0], "truncation": float(f[1]), "occlusion": int(float(f[2])),
-             "bbox": np.array([float(v) for v in f[4:8]], dtype=np.float64)}
-        if with_score:
-            d["score"] = float(f[15]) if len(f) > 15 else 1.0
-        out.append(d)
-    return out
+DIFFS = ("Easy", "Moderate", "Hard")
+MIN_OVERLAP = np.array([[[0.7, 0.5, 0.5]] * 3])   # [1, metric(bbox/bev/3d), class] — 2D 는 metric 0만 쓴다
 
 
-def iou_mat(a, b):
-    """a:(N,4) b:(M,4) xyxy -> IoU (N,M)"""
-    if len(a) == 0 or len(b) == 0:
-        return np.zeros((len(a), len(b)))
-    ax1, ay1, ax2, ay2 = a.T[:, :, None]
-    bx1, by1, bx2, by2 = b.T[:, None, :]
-    iw = np.minimum(ax2, bx2) - np.maximum(ax1, bx1)
-    ih = np.minimum(ay2, by2) - np.maximum(ay1, by1)
-    inter = iw.clip(0) * ih.clip(0)
-    ua = (ax2 - ax1) * (ay2 - ay1) + (bx2 - bx1) * (by2 - by1) - inter
-    return inter / np.maximum(ua, 1e-9)
+# ---------------------------------------------------------------- 입출력
+def load_annos(folder, ids, what):
+    folder = Path(folder)
+    missing = [i for i in ids if not (folder / f"{i}.txt").exists()]
+    if missing:
+        sys.exit(f"[중단] {what} 파일 {len(missing)}개 없음 (예: {missing[:3]}) — {folder}\n"
+                 f"예측이 0개인 이미지도 빈 파일이 있어야 한다.")
+    return KC.get_label_annos(str(folder), [int(i) for i in ids])
 
 
-def ioa_mat(det, dc):
-    """예측 박스 면적 대비 교집합 비율 (N_det, N_dc)"""
-    if len(det) == 0 or len(dc) == 0:
-        return np.zeros((len(det), len(dc)))
-    ax1, ay1, ax2, ay2 = det.T[:, :, None]
-    bx1, by1, bx2, by2 = dc.T[:, None, :]
-    iw = np.minimum(ax2, bx2) - np.maximum(ax1, bx1)
-    ih = np.minimum(ay2, by2) - np.maximum(ay1, by1)
-    inter = (iw.clip(0) * ih.clip(0))
-    area = np.maximum((ax2 - ax1) * (ay2 - ay1), 1e-9)
-    return inter / area
+def count_valid_gt(gt_annos, dt_annos, ci, di):
+    return int(E._prepare_data(gt_annos, dt_annos, ci, di)[-1])
 
 
-def split_gt(gts, cls, diff):
-    """GT를 (평가대상, 무시, DontCare) 로 분류"""
-    min_h, max_occ, max_tr = DIFFICULTY[diff]
-    valid, ignored, dc = [], [], []
-    for g in gts:
-        if g["type"] == "DontCare":
-            dc.append(g["bbox"])
-            continue
-        h = g["bbox"][3] - g["bbox"][1]
-        too_hard = (h < min_h) or (g["occlusion"] > max_occ) or (g["truncation"] > max_tr)
-        if g["type"] == cls:
-            (ignored if too_hard else valid).append(g["bbox"])
-        elif NEIGHBOR.get(cls) == g["type"]:
-            ignored.append(g["bbox"])          # 이웃 클래스는 항상 무시
-    f = lambda L: np.array(L, dtype=np.float64).reshape(-1, 4)
-    return f(valid), f(ignored), f(dc)
-
-
-def eval_image(gts, dets, cls, diff, thr):
-    """한 장 처리 -> (scores, is_tp, n_gt)"""
-    valid, ignored, dc = split_gt(gts, cls, diff)
-    min_h = DIFFICULTY[diff][0]
-
-    d = [x for x in dets if x["type"] == cls]
-    d.sort(key=lambda x: -x["score"])
-    db = np.array([x["bbox"] for x in d], dtype=np.float64).reshape(-1, 4)
-    ds = np.array([x["score"] for x in d], dtype=np.float64)
-
-    iou_v = iou_mat(db, valid)
-    iou_i = iou_mat(db, ignored)
-    ioa_d = ioa_mat(db, dc)
-
-    taken = np.zeros(len(valid), dtype=bool)
-    scores, tps = [], []
-    for k in range(len(d)):
-        # 1) 평가대상 GT 매칭 (미할당 중 최대 IoU)
-        if len(valid):
-            cand = np.where(~taken, iou_v[k], -1.0)
-            j = int(cand.argmax())
-            if cand[j] >= thr:
-                taken[j] = True
-                scores.append(ds[k]); tps.append(1)
-                continue
-        # 2) 무시 GT(난이도 미달 / 이웃 클래스)에 맞으면 버린다
-        if len(ignored) and iou_i[k].max() >= thr:
-            continue
-        # 3) 높이 미달 예측은 FP로 세지 않는다
-        if (db[k][3] - db[k][1]) < min_h:
-            continue
-        # 4) DontCare 영역에 걸친 예측은 버린다
-        if len(dc) and ioa_d[k].max() >= DC_IOA:
-            continue
-        scores.append(ds[k]); tps.append(0)
-    return scores, tps, int(len(valid))
-
-
-def ap40(scores, tps, n_gt):
-    """40-point 보간 AP (KITTI 2017 이후 공식 방식)"""
-    if n_gt == 0:
-        return float("nan")
-    if not scores:
-        return 0.0
-    o = np.argsort(-np.asarray(scores, dtype=np.float64))
-    tp = np.asarray(tps, dtype=np.float64)[o]
-    ctp = np.cumsum(tp)
-    cfp = np.cumsum(1.0 - tp)
-    rec = ctp / n_gt
-    prec = ctp / np.maximum(ctp + cfp, 1e-9)
-    # 단조 감소 보간
-    prec = np.maximum.accumulate(prec[::-1])[::-1]
-    total = 0.0
-    for i in range(1, 41):
-        r = i / 40.0
-        m = rec >= r
-        total += prec[m].max() if m.any() else 0.0
-    return total / 40.0
-
-
-def evaluate(gt_dir, pred_dir, ids, difficulties=("Easy", "Moderate", "Hard")):
+# ---------------------------------------------------------------- 평가
+def evaluate(gt_dir, pred_dir, ids):
+    gt = load_annos(gt_dir, ids, "GT")
+    dt = load_annos(pred_dir, ids, "예측")
+    ret = E.eval_class(gt, dt, [0, 1, 2], [0, 1, 2], 0, MIN_OVERLAP)
+    ap = E.get_mAP_R40(ret["precision"])[:, :, 0]          # [class, difficulty]
     res = {}
-    for cls in CLASSES:
-        thr = IOU_THR[cls]
-        for diff in difficulties:
-            S, T, G = [], [], 0
-            for i in ids:
-                g = read_kitti(Path(gt_dir) / f"{i}.txt")
-                p = read_kitti(Path(pred_dir) / f"{i}.txt", with_score=True)
-                s, t, n = eval_image(g, p, cls, diff, thr)
-                S += s; T += t; G += n
-            res[f"{cls}/{diff}"] = {"AP40": round(100 * ap40(S, T, G), 2),
-                                    "n_gt": G, "n_det": len(S)}
+    for ci, c in enumerate(CLASSES):
+        for di, d in enumerate(DIFFS):
+            n = count_valid_gt(gt, dt, ci, di)
+            res[f"{c}/{d}"] = {"AP40": round(float(ap[ci, di]), 2) if n else float("nan"), "n_gt": n}
     missing = [c for c in CLASSES if res[f"{c}/Moderate"]["n_gt"] == 0]
     if missing:
-        res["warning"] = (f"GT가 0인 클래스 {missing} 는 mAP 평균에서 제외되었다. "
-                          f"공식 1000장 평가셋에서는 3클래스 모두 존재해야 정상이다.")
+        res["warning"] = (f"GT가 0인 클래스 {missing} 는 평균에서 제외했다. "
+                          f"공식 1000장 평가셋에서는 3클래스 모두 있어야 정상이다.")
         print("[경고] " + res["warning"], file=sys.stderr)
-    for diff in difficulties:
-        vals = [res[f"{c}/{diff}"]["AP40"] for c in CLASSES
-                if not np.isnan(res[f"{c}/{diff}"]["AP40"])]
-        res[f"mAP/{diff}"] = round(float(np.mean(vals)), 2) if vals else float("nan")
-        res[f"mAP/{diff}_classes"] = len(vals)
+    for d in DIFFS:
+        vals = [res[f"{c}/{d}"]["AP40"] for c in CLASSES if not np.isnan(res[f"{c}/{d}"]["AP40"])]
+        res[f"mAP/{d}"] = round(float(np.mean(vals)), 2) if vals else float("nan")
     return res
 
 
+# ---------------------------------------------------------------- 규칙 자체검증
+def _anno(lines, with_score=False):
+    """[(type, trunc, occ, x1, y1, x2, y2[, score])] -> get_label_annos 와 같은 dict"""
+    a = {"name": np.array([l[0] for l in lines], dtype=object).astype(str) if lines else np.array([]),
+         "truncated": np.array([float(l[1]) for l in lines]),
+         "occluded": np.array([int(l[2]) for l in lines]),
+         "alpha": np.full(len(lines), -10.0),
+         "bbox": np.array([[float(v) for v in l[3:7]] for l in lines]).reshape(-1, 4)}
+    a["score"] = np.array([float(l[7]) for l in lines]) if with_score else np.zeros(len(lines))
+    return a
+
+
+def _stats(gts, dets, cls, diff="Moderate"):
+    """한 장에 대해 공식 엔진의 (TP, FP, FN, 유효GT수) — 임계값 0"""
+    g, d = _anno(gts), _anno(dets, with_score=True)
+    ci, di = CLASSES.index(cls), DIFFS.index(diff)
+    gl, dl, ig, idt, dc, _, nv = E._prepare_data([g], [d], ci, di)
+    ov = E.image_box_overlap(d["bbox"], g["bbox"])                   # (n_det, n_gt)
+    tp, fp, fn, _, _ = E.compute_statistics_jit(ov, gl[0], dl[0], ig[0], idt[0], dc[0], 0,
+                                                MIN_OVERLAP[0, 0, ci], 0.0, True)
+    return int(tp), int(fp), int(fn), int(nv)
+
+
+def _ap(gts, dets, cls, diff="Moderate"):
+    ci, di = CLASSES.index(cls), DIFFS.index(diff)
+    ret = E.eval_class([_anno(gts)], [_anno(dets, True)], [ci], [di], 0, MIN_OVERLAP[:, :, [ci]])
+    return float(E.get_mAP_R40(ret["precision"])[0, 0, 0])
+
+
 def selftest():
-    """규칙별 단위 검증"""
     ok = True
+
     def chk(name, cond):
         nonlocal ok
-        print(("  OK   " if cond else "  FAIL ") + name); ok = ok and cond
+        print(("  OK   " if cond else "  FAIL ") + name)
+        ok = ok and bool(cond)
 
-    gt_easy = {"type": "Car", "truncation": 0.0, "occlusion": 0,
-               "bbox": np.array([0., 0., 100., 100.])}
-    perfect = {"type": "Car", "bbox": np.array([0., 0., 100., 100.]), "score": 0.9}
-
-    s, t, n = eval_image([gt_easy], [perfect], "Car", "Moderate", 0.7)
-    chk("완전 일치 -> TP 1, n_gt 1", t == [1] and n == 1)
-    chk("AP40 만점", abs(ap40(s, t, n) - 1.0) < 1e-9)
-
-    # 난이도 미달 GT(높이 20px)는 n_gt 에서 빠지고, 거기 맞은 예측도 FP가 아니다
-    small_gt = dict(gt_easy, bbox=np.array([0., 0., 100., 20.]))
-    small_det = dict(perfect, bbox=np.array([0., 0., 100., 20.]))
-    s, t, n = eval_image([small_gt], [small_det], "Car", "Moderate", 0.7)
-    chk("높이 20px GT는 Moderate n_gt 제외", n == 0)
-    chk("높이 20px 예측은 FP 아님", t == [])
-
-    # occlusion 2 는 Moderate 제외, Hard 포함
-    occ = dict(gt_easy, occlusion=2)
-    chk("occlusion=2 Moderate 제외", eval_image([occ], [], "Car", "Moderate", 0.7)[2] == 0)
-    chk("occlusion=2 Hard 포함", eval_image([occ], [], "Car", "Hard", 0.7)[2] == 1)
-
-    # truncation 0.4 는 Moderate 제외
-    tr = dict(gt_easy, truncation=0.4)
-    chk("truncation=0.40 Moderate 제외", eval_image([tr], [], "Car", "Moderate", 0.7)[2] == 0)
-
-    # Van 위의 Car 예측은 FP 가 아니다
-    van = {"type": "Van", "truncation": 0.0, "occlusion": 0, "bbox": np.array([0., 0., 100., 100.])}
-    s, t, n = eval_image([van], [perfect], "Car", "Moderate", 0.7)
-    chk("Van 위 Car 예측은 FP 아님", t == [] and n == 0)
-
-    # Person_sitting 위의 Pedestrian 예측은 FP 가 아니다
-    ps = {"type": "Person_sitting", "truncation": 0.0, "occlusion": 0,
-          "bbox": np.array([0., 0., 60., 120.])}
-    pd = {"type": "Pedestrian", "bbox": np.array([0., 0., 60., 120.]), "score": 0.8}
-    chk("Person_sitting 위 Pedestrian 예측은 FP 아님",
-        eval_image([ps], [pd], "Pedestrian", "Moderate", 0.5)[1] == [])
-
-    # DontCare 영역에 걸친 예측은 버린다
-    dc = {"type": "DontCare", "truncation": 0.0, "occlusion": 0,
-          "bbox": np.array([0., 0., 200., 200.])}
-    chk("DontCare 영역 예측 제거", eval_image([dc], [perfect], "Car", "Moderate", 0.7)[1] == [])
-
-    # Car IoU 0.7 경계: IoU 0.68 은 FP
-    loose = dict(perfect, bbox=np.array([0., 0., 100., 68.]))
-    s, t, n = eval_image([gt_easy], [loose], "Car", "Moderate", 0.7)
-    chk("Car IoU<0.70 은 FP", t == [0] and n == 1)
-    # Pedestrian IoU 0.5 기준에서는 같은 겹침이 TP
-    gp = {"type": "Pedestrian", "truncation": 0.0, "occlusion": 0,
-          "bbox": np.array([0., 0., 100., 100.])}
-    dp = {"type": "Pedestrian", "bbox": np.array([0., 0., 100., 68.]), "score": 0.9}
-    chk("Pedestrian IoU>=0.50 은 TP", eval_image([gp], [dp], "Pedestrian", "Moderate", 0.5)[1] == [1])
-
-    # 중복 예측 1개는 FP
-    s, t, n = eval_image([gt_easy], [perfect, dict(perfect, score=0.8)], "Car", "Moderate", 0.7)
-    chk("중복 예측은 FP", t == [1, 0])
-
-    # AP40: GT 2개 중 1개만 완벽 검출 -> 0.5
-    g2 = [gt_easy, dict(gt_easy, bbox=np.array([200., 0., 300., 100.]))]
-    s, t, n = eval_image(g2, [perfect], "Car", "Moderate", 0.7)
-    chk("절반 검출 AP40=0.50", abs(ap40(s, t, n) - 0.5) < 1e-9)
-
+    car = ("Car", 0.0, 0, 0, 0, 100, 100)
+    det = lambda c, b, s=0.9: (c, -1, -1, *b, s)               # noqa: E731
+    chk("완전 일치 -> TP1 FP0 FN0", _stats([car], [det("Car", (0, 0, 100, 100))], "Car")[:3] == (1, 0, 0))
+    # AP40 은 GT 가 충분히 많아야 의미가 있다: 공식 알고리즘은 TP 점수로 '재현율 1/40 간격' 임계값을
+    # 고르므로, GT 가 1~2개면 임계값이 0번 칸 하나뿐이라 AP40=0 이 된다 (공식 C++ 도 동일).
+    many = [("Car", 0.0, 0, 10 * k, 0, 10 * k + 8, 100) for k in range(80)]
+    hits = [det("Car", g[3:7], 0.5 + k / 200) for k, g in enumerate(many)]
+    chk("GT 1개 완전 검출 -> AP40 0 (공식 알고리즘의 표본 수 한계)",
+        _ap([car], [det("Car", (0, 0, 100, 100))], "Car") == 0.0)
+    chk("GT 80개 완전 검출 -> AP40 100", abs(_ap(many, hits, "Car") - 100) < 1e-6)
+    chk("GT 80개 중 40개 완전 검출 -> AP40 50", abs(_ap(many, hits[:40], "Car") - 50) < 1e-6)
+    small = ("Car", 0.0, 0, 0, 0, 100, 20)
+    chk("높이 20px GT 는 Moderate 유효GT 아님, 거기 맞은 예측도 FP 아님",
+        _stats([small], [det("Car", (0, 0, 100, 20))], "Car") == (0, 0, 0, 0))
+    occ2 = ("Car", 0.0, 2, 0, 0, 100, 100)
+    chk("occlusion=2 -> Moderate 제외 / Hard 포함",
+        _stats([occ2], [], "Car")[3] == 0 and _stats([occ2], [], "Car", "Hard")[3] == 1)
+    chk("truncation=0.40 -> Moderate 제외", _stats([("Car", 0.4, 0, 0, 0, 100, 100)], [], "Car")[3] == 0)
+    chk("Van 위의 Car 예측은 FP 아님",
+        _stats([("Van", 0.0, 0, 0, 0, 100, 100)], [det("Car", (0, 0, 100, 100))], "Car") == (0, 0, 0, 0))
+    chk("Person_sitting 위의 Pedestrian 예측은 FP 아님",
+        _stats([("Person_sitting", 0.0, 0, 0, 0, 60, 120)], [det("Pedestrian", (0, 0, 60, 120))],
+               "Pedestrian") == (0, 0, 0, 0))
+    dc = ("DontCare", -1, -1, 0, 0, 200, 200)
+    chk("DontCare 안에 완전히 들어간 예측은 버림", _stats([dc], [det("Car", (0, 0, 100, 100))], "Car")[1] == 0)
+    # 예측 면적의 60%만 DontCare 와 겹침: Car(임계 0.7)는 FP, Pedestrian(임계 0.5)은 버림
+    part = (140, 0, 240, 100)
+    chk("DontCare 겹침 0.6 -> Car 는 FP (클래스별 임계 0.7)", _stats([dc], [det("Car", part)], "Car")[1] == 1)
+    chk("DontCare 겹침 0.6 -> Pedestrian 은 버림 (임계 0.5)",
+        _stats([dc], [det("Pedestrian", part)], "Pedestrian")[1] == 0)
+    chk("Car IoU 0.68 -> FP1 FN1", _stats([car], [det("Car", (0, 0, 100, 68))], "Car")[:3] == (0, 1, 1))
+    ped = ("Pedestrian", 0.0, 0, 0, 0, 100, 100)
+    chk("Pedestrian IoU 0.68 -> TP (임계 0.5)",
+        _stats([ped], [det("Pedestrian", (0, 0, 100, 68))], "Pedestrian")[0] == 1)
+    chk("중복 예측 -> TP1 FP1",
+        _stats([car], [det("Car", (0, 0, 100, 100)), det("Car", (0, 0, 100, 100), 0.8)], "Car")[:2] == (1, 1))
+    chk("높이 25px 미만 예측은 GT 없어도 FP 아님", _stats([car], [det("Car", (300, 0, 400, 20))], "Car")[1] == 0)
+    # 공식 매칭은 점수가 아니라 겹침 기준: 점수 높은 IoU 0.75 예측이 FP, 점수 낮은 IoU 0.95 예측이 TP
+    chk("매칭은 겹침 최대 우선 (점수 순 아님)",
+        _stats([car], [det("Car", (0, 0, 100, 75), 0.9), det("Car", (0, 0, 100, 95), 0.5)], "Car")[:2] == (1, 1))
     print("[selftest]", "통과" if ok else "실패")
     return ok
 
 
+# ---------------------------------------------------------------- main
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--gt"); ap.add_argument("--pred")
     ap.add_argument("--split", default="splits/eval_val.txt")
-    ap.add_argument("--out", default="benchmarks/ap40.json")
-    ap.add_argument("--tag", default="")
+    ap.add_argument("--tag", default="", help="모델 이름. 결과 파일명과 results.jsonl 기록에 쓴다")
+    ap.add_argument("--out", default=None, help="기본: benchmarks/ap40_<tag>.json")
+    ap.add_argument("--jsonl", default="benchmarks/results.jsonl")
     ap.add_argument("--selftest", action="store_true")
     a = ap.parse_args()
 
@@ -262,13 +172,27 @@ def main():
         sys.exit("--gt 와 --pred 가 필요하다")
 
     ids = Path(a.split).read_text().split()
+    t0 = time.time()
     res = evaluate(a.gt, a.pred, ids)
-    res["tag"] = a.tag
-    res["n_images"] = len(ids)
-    print(json.dumps(res, indent=2, ensure_ascii=False))
-    print(f"\n>>> 공식 점수 (Moderate mAP40, 3클래스 평균): {res['mAP/Moderate']}")
-    Path(a.out).parent.mkdir(parents=True, exist_ok=True)
-    Path(a.out).write_text(json.dumps(res, indent=2, ensure_ascii=False))
+    res.update(tag=a.tag, n_images=len(ids), split=a.split,
+               engine="kitti_object_eval_python (official devkit port)")
+
+    print(f"{'':12s}" + "".join(f"{d:>10s}" for d in DIFFS))
+    for c in CLASSES:
+        print(f"{c:12s}" + "".join(f"{res[f'{c}/{d}']['AP40']:>10.2f}" for d in DIFFS)
+              + f"   (Moderate GT {res[f'{c}/Moderate']['n_gt']})")
+    print(f"{'mAP':12s}" + "".join(f"{res[f'mAP/{d}']:>10.2f}" for d in DIFFS))
+    print(f"\n>>> 공식 점수 (Moderate AP40, 3클래스 평균): {res['mAP/Moderate']}   [{time.time() - t0:.1f}s]")
+
+    out = Path(a.out or f"benchmarks/ap40_{a.tag or 'untagged'}.json")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(res, indent=2, ensure_ascii=False))
+    jsonl_append(a.jsonl, {
+        "kind": "ap40", "model": a.tag, "split": a.split, "n_images": len(ids),
+        "mAP_moderate": res["mAP/Moderate"],
+        **{f"{c}_moderate": res[f"{c}/Moderate"]["AP40"] for c in CLASSES},
+        "mAP_easy": res["mAP/Easy"], "mAP_hard": res["mAP/Hard"],
+        "engine": "official-port", "ts": time.strftime("%Y-%m-%dT%H:%M:%S")})
 
 
 if __name__ == "__main__":

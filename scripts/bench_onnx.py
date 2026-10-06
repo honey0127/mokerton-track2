@@ -68,7 +68,8 @@ def bench_once(path, w, h, threads, runs=RUNS, warmup=WARMUP):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("model")
-    ap.add_argument("--imgsz", default="1280x384")
+    ap.add_argument("--imgsz", default=None,
+                    help="미지정 시 모델 입력 크기를 그대로 쓴다 (1280x384 / 640x192 모델이 섞여 있어도 안전)")
     ap.add_argument("--threads", type=int, default=12)
     ap.add_argument("--repeat", type=int, default=3,
                     help="전체 측정 반복 횟수. 단발 측정의 10%% 미만 차이는 결론으로 삼지 않는다.")
@@ -76,7 +77,15 @@ def main():
     ap.add_argument("--tag", default="")
     ap.add_argument("--jsonl", default="benchmarks/results.jsonl")
     a = ap.parse_args()
-    w, h = parse_imgsz(a.imgsz)
+    if a.imgsz:
+        w, h = parse_imgsz(a.imgsz)
+    else:
+        # ORT 세션을 미리 만들면 그 메모리가 peak RSS 에 섞이므로 그래프 메타데이터만 읽는다
+        import onnx
+        dims = onnx.load(a.model, load_external_data=False).graph.input[0].type.tensor_type.shape.dim
+        h, w = dims[2].dim_value, dims[3].dim_value
+        if not (h and w):
+            sys.exit("동적 입력 모델이다 — --imgsz 를 지정하라")
 
     reps = [bench_once(a.model, w, h, a.threads, a.runs) for _ in range(a.repeat)]
     agg = {

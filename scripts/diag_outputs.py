@@ -12,7 +12,7 @@ import argparse, json
 from pathlib import Path
 import sys
 sys.path.insert(0, str(Path(__file__).parent))
-from common import parse_imgsz, preprocess  # noqa: E402
+from common import parse_imgsz, preprocess, model_input_wh  # noqa: E402
 
 import numpy as np
 import onnxruntime as ort
@@ -39,10 +39,13 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--models", nargs="+", required=True)
     ap.add_argument("--image", required=True)
-    ap.add_argument("--imgsz", default="1280x384")
+    ap.add_argument("--imgsz", default=None, help="미지정 시 첫 모델의 입력 크기")
     ap.add_argument("--conf", type=float, default=0.25)
     a = ap.parse_args()
-    w, h = parse_imgsz(a.imgsz)
+    if a.imgsz:
+        w, h = parse_imgsz(a.imgsz)
+    else:
+        w, h = model_input_wh(ort.InferenceSession(a.models[0], providers=["CPUExecutionProvider"]))
     x, *_ = preprocess(a.image, w, h)
 
     rows = {}

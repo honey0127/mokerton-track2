@@ -64,8 +64,9 @@ def main():
     ap.add_argument("--splits", default="splits")
     ap.add_argument("--merge-neighbors", dest="merge", action="store_true", default=True)
     ap.add_argument("--no-merge-neighbors", dest="merge", action="store_false")
-    ap.add_argument("--link", action="store_true", default=True,
-                    help="이미지를 복사하지 않고 심볼릭 링크 (12GB 중복 방지)")
+    ap.add_argument("--copy", dest="link", action="store_false", default=True,
+                    help="심볼릭 링크 대신 복사한다. 윈도우(관리자/개발자 모드가 아니면 링크 생성 불가)나 "
+                         "다른 PC 로 data/kitti_yolo 를 통째로 옮길 때 쓴다. 기본은 링크(12GB 중복 방지)")
     a = ap.parse_args()
 
     root = Path(a.kitti_root)
@@ -78,6 +79,7 @@ def main():
 
     out = Path(a.out)
     total = Counter()
+    per_split = {}
     for split in ("train", "holdout", "eval_val"):
         ids = (Path(a.splits) / f"{split}.txt").read_text().split()
         (out / "images" / split).mkdir(parents=True, exist_ok=True)
@@ -87,7 +89,12 @@ def main():
             dst = out / "images" / split / f"{i}.png"
             if not dst.exists():
                 if a.link:
-                    dst.symlink_to(src.resolve())
+                    try:
+                        dst.symlink_to(src.resolve())
+                    except OSError:          # 윈도우 권한 부족 등 -> 복사로 전환
+                        print("  [알림] 심볼릭 링크를 만들 수 없어 복사로 전환한다 (--copy 와 동일)")
+                        a.link = False
+                        shutil.copy2(src, dst)
                 else:
                     shutil.copy2(src, dst)
             # KITTI 이미지 크기는 장마다 다르다. PNG 헤더에서 직접 읽는다.
@@ -95,11 +102,22 @@ def main():
             lines, st = convert_one(lab_dir / f"{i}.txt", w, h, a.merge)
             (out / "labels" / split / f"{i}.txt").write_text("\n".join(lines) + ("\n" if lines else ""))
             total.update(st)
+            per_split.setdefault(split, Counter()).update(st)
         print(f"[{split}] {len(ids)}장 변환 완료")
 
     print("\n[클래스 통계]")
     for k, v in sorted(total.items()):
         print(f"  {k:32s} {v:7d}")
+    # 보고서 '데이터셋' 절에 쓸 수 있도록 split 별 통계를 남긴다
+    import json
+    stats_path = Path("benchmarks/kitti_class_stats.json")
+    stats_path.parent.mkdir(parents=True, exist_ok=True)
+    stats_path.write_text(json.dumps({s: dict(sorted(c.items())) for s, c in per_split.items()},
+                                     indent=2, ensure_ascii=False))
+    print(f"  -> {stats_path}")
+    # 안전장치: Ultralytics 라벨 캐시가 남아 있으면 바뀐 라벨 대신 옛 캐시를 읽는다
+    for c in (out / "labels").glob("*.cache"):
+        c.unlink()
     print("\n주의: DontCare 박스는 YOLO 라벨에 넣지 않았다. "
           "평가 시 scripts/kitti_eval.py 가 원본 label_2 에서 직접 읽어 무시 영역으로 쓴다.")
 

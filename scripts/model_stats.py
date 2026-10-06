@@ -24,27 +24,31 @@ def main():
     from ultralytics import YOLO
     from ultralytics.utils.torch_utils import get_flops, get_num_params
 
+    import copy
     m = YOLO(a.weights)
-    net = m.model.float().eval()
+    raw = m.model.float().eval()
+    # 배포되는 ONNX 는 Conv+BN 이 합쳐진(fused) 그래프다. 채점 대상인 params/FLOPs 는 이 기준으로 센다.
+    # (unfused 값도 함께 남긴다: YOLO11n-3cls 1280x384 에서 fused 7.66 / unfused 7.82 GFLOPs)
+    net = copy.deepcopy(raw).fuse(verbose=False)
+
+    def count(model):
+        # Ultralytics get_flops 는 정사각 imgsz 가정 -> 직사각형은 thop 으로 직접 잰다
+        try:
+            import thop
+            macs, _ = thop.profile(copy.deepcopy(model), inputs=(torch.zeros(1, 3, h, w),), verbose=False)
+            return round(macs * 2 / 1e9, 2)   # MACs -> FLOPs
+        except Exception as e:
+            try:
+                return round(get_flops(model, imgsz=max(w, h)), 2)
+            except Exception:
+                return f"thop 실패: {e}"
 
     params = get_num_params(net)
-    # Ultralytics get_flops 는 정사각 imgsz 가정 -> 직사각형은 thop 으로 직접 잰다
-    gflops = None
-    try:
-        import thop
-        x = torch.zeros(1, 3, h, w)
-        macs, _ = thop.profile(net, inputs=(x,), verbose=False)
-        gflops = round(macs * 2 / 1e9, 2)   # MACs -> FLOPs
-    except Exception as e:
-        gflops = f"thop 실패: {e}"
-        try:
-            gflops = round(get_flops(net, imgsz=max(w, h)) * 2, 2)
-        except Exception:
-            pass
-
     rec = {"kind": "model_stats", "weights": str(a.weights), "imgsz": f"{w}x{h}",
            "params_M": round(params / 1e6, 3), "params": int(params),
-           "GFLOPs": gflops, "pt_size_MB": round(Path(a.weights).stat().st_size / 1e6, 2)}
+           "GFLOPs": count(net), "GFLOPs_unfused": count(raw),
+           "params_unfused": int(get_num_params(raw)), "count_method": "thop MACs x2, Conv-BN fused",
+           "pt_size_MB": round(Path(a.weights).stat().st_size / 1e6, 2)}
     print(json.dumps(rec, indent=2, ensure_ascii=False))
     jsonl_append(a.jsonl, rec)
 
