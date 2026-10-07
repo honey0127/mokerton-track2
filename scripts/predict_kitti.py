@@ -43,7 +43,7 @@ def main():
     ap.add_argument("--conf", type=float, default=0.001,
                     help="AP 계산용이므로 낮게 둔다. 0.25 같은 값을 쓰면 recall이 잘려 AP가 낮게 나온다.")
     ap.add_argument("--iou", type=float, default=0.65)
-    ap.add_argument("--threads", type=int, default=12)
+    ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--drop-stride", type=int, default=0, choices=[0, 8, 16, 32],
                     help=("이 stride 검출 헤드의 출력을 버리고 채점한다 (재학습 없는 ablation 근사). "
                           "예: 32 = P5 헤드를 뗀 것처럼. 재학습하면 남은 헤드가 일부 메워 주므로 '최대 피해'에 가깝다"))

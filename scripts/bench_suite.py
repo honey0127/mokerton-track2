@@ -10,9 +10,13 @@
 측정 1회 = bench_onnx.py 를 '새 프로세스'로 --repeat 1 실행 (warm-up 30, 300회, 시드 고정, ORT 설정 동일).
 새 프로세스로 띄우는 이유: 한 프로세스에서 모델을 여러 개 돌리면 peak RSS 에 앞 모델 메모리가 섞인다.
 
-  python scripts/bench_suite.py models/*.onnx --threads 12,4 --rounds 5          # = make bench-all
+예열(--soak): 2026-10-07 스레드 스윕에서 첫 라운드(약 1분)만 4스레드 이상이 7~19% 빨랐고(터보),
+2스레드는 ±1% 로 그대로였다. 둘째·셋째 라운드끼리는 대부분 5% 안쪽으로 안정. 즉 흔들림의 대부분은
+'처음 1분의 터보'다. 자율주행 인지는 계속 도는 작업이므로 예열 뒤의 '지속 성능'을 보고한다.
+
+  python scripts/bench_suite.py models/*.onnx --threads 4,12 --rounds 5 --soak 120      # = make bench-all
   python scripts/bench_suite.py models/a_fp32.onnx models/a_int8-mixed.onnx \
-      --threads 2,4,6,8,12,16 --rounds 3 --runs 150 --tag thread-sweep           # = make thread-sweep
+      --threads 2,4,6,8,12,16 --rounds 3 --runs 150 --soak 120 --tag thread-sweep      # = make thread-sweep
 """
 from __future__ import annotations
 import argparse, json, os, random, statistics as st, subprocess, sys, tempfile, time
@@ -43,11 +47,14 @@ def run_once(model, threads, runs, tag):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("models", nargs="+")
-    ap.add_argument("--threads", default="12,4", help="쉼표 구분 (예: 12,4 또는 2,4,6,8,12,16)")
+    ap.add_argument("--threads", default="4,12", help="쉼표 구분. 첫 값이 주 조건 (예: 4,12 또는 2,4,6,8,12,16)")
     ap.add_argument("--rounds", type=int, default=5)
     ap.add_argument("--runs", type=int, default=300, help="측정 1회의 반복 횟수 (warm-up 30 은 별도)")
     ap.add_argument("--seed", type=int, default=0, help="라운드별 순서 섞기 시드 (재현용)")
     ap.add_argument("--cooldown", type=float, default=0.0, help="측정 사이 쉬는 시간(초)")
+    ap.add_argument("--soak", type=float, default=0.0,
+                    help=("측정 전에 이 시간(초) 동안 첫 모델을 최대 스레드로 계속 돌려 CPU 를 '지속 상태'로 만든다. "
+                          "2026-10-07 스윕: 첫 1분 남짓은 터보 때문에 4스레드 이상이 7~19%% 빨랐고 그 뒤로는 안정"))
     ap.add_argument("--tag", default="interleaved")
     ap.add_argument("--jsonl", default="benchmarks/results.jsonl", help="모델 x 스레드별 집계 기록")
     ap.add_argument("--raw", default="benchmarks/bench_rounds.jsonl", help="라운드별 원본 기록")
@@ -60,6 +67,14 @@ def main():
     est = len(jobs) * a.rounds
     print(f"[bench_suite] 모델 {len(models)}개 x 스레드 {threads} x {a.rounds}라운드 = 측정 {est}회 (순서 무작위, seed={a.seed})")
 
+    if a.soak > 0:
+        ts, n = time.time(), 0
+        print(f"[예열] {Path(models[0]).stem} t={max(threads)} 로 {a.soak:.0f}초 동안 계속 돌린다 (결과는 버림)")
+        while time.time() - ts < a.soak:
+            run_once(models[0], max(threads), a.runs, "soak")
+            n += 1
+        print(f"[예열] 끝 — {n}회, {time.time() - ts:.0f}초")
+
     res = defaultdict(list)
     t0, k = time.time(), 0
     for r in range(a.rounds):
@@ -67,7 +82,7 @@ def main():
         rng.shuffle(order)
         for m, t in order:
             rec = run_once(m, t, a.runs, f"{a.tag}/round{r + 1}")
-            rec.update(round=r + 1, order="interleaved", seed=a.seed)
+            rec.update(round=r + 1, order="interleaved", seed=a.seed, soak_s=a.soak)
             res[(m, t)].append(rec)
             jsonl_append(a.raw, rec)
             k += 1
@@ -91,7 +106,7 @@ def main():
             agg = {
                 "kind": "bench", "model": Path(m).name, "path": m, "imgsz": reps[0]["imgsz"],
                 "threads": t, "repeat": len(reps), "runs": a.runs, "warmup": reps[0]["warmup"],
-                "tag": a.tag, "order": "interleaved", "seed": a.seed,
+                "tag": a.tag, "order": "interleaved", "seed": a.seed, "soak_s": a.soak,
                 "size_MB": reps[0]["size_MB"],
                 "p50_ms": round(p50, 2), "p99_ms": round(st.median(p99s), 2),
                 "p50_all": p50s, "p99_all": p99s, "p50_spread_pct": round(spread, 1),
@@ -104,7 +119,7 @@ def main():
         print(f"  {Path(m).stem:48s} " + "".join(f"{c:>18s}" for c in cells))
     print(f"\n  기록: {a.jsonl} (집계), {a.raw} (라운드별 원본). 총 {(time.time() - t0) / 60:.1f}분")
     if noisy:
-        print(f"  [주의] 흔들림 10% 초과 {noisy}칸 — 전원 연결·최고 성능 모드·다른 앱 종료 확인, "
+        print(f"  [주의] 흔들림 10% 초과 {noisy}칸 — --soak 120 으로 예열했는지, 전원 연결·최고 성능 모드·다른 앱 종료 확인, "
               f"--rounds 를 늘리거나 --cooldown 5 를 준다. 10% 미만 차이는 결론으로 쓰지 않는다.")
 
 
