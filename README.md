@@ -16,7 +16,8 @@ make train                                   # GPU PC. 640 은 make train IMGSZ=
 make quantize                                # 640 은 WEIGHTS=runs/kitti_640/weights/best.pt IMGSZ=640x192
 make quantize-extra                          # 박스경로 FP32 / Percentile / Entropy 비교
 make sensitivity                             # 층별 민감도 -> 하위 2/4/8 모듈 FP32 유지 모델
-make bench-all                               # 지연·메모리: 성능 담당 PC 한 대에서만
+make thread-sweep                            # 주 스레드 조건 재확인 (최종 측정 전에 1번)
+make bench-all                               # 지연·메모리: 성능 담당 PC 한 대에서만, 순서 섞은 5라운드
 make eval-all SPLIT=holdout                  # 고르기·튜닝은 holdout 으로
 make eval-all                                # 보고 수치: eval_val 1,000장
 make summary                                 # -> benchmarks/summary_eval_val.md (Drop Rate 표)
@@ -125,10 +126,20 @@ KITTI 원본 1242x375. 정사각 640x640은 letterbox 패딩에 NPU 연산을 �
 - ORT: `intra_op` 명시, `inter_op=1`, `ORT_SEQUENTIAL`, 최적화 레벨 ALL
 - 메모리: psutil peak RSS
 - 보고 지표는 평균이 아니라 **p50 + p99**. 최악 프레임 지연이 안전과 직결
-- 전체 측정을 **3회 반복**. 단발 측정의 10% 미만 차이는 결론으로 삼지 않는다
+- **5라운드, 라운드마다 (모델, 스레드) 순서를 섞어 1회씩** 재고 중앙값을 보고한다 (`bench_suite.py`, seed 0).
+  측정 1회는 새 프로세스로 띄운다 (peak RSS 에 앞 모델 메모리가 섞이지 않게).
+  라운드 간 흔들림 = (최대-최소)/중앙값 을 함께 기록하고, 10% 미만 차이는 결론으로 삼지 않는다
+- 측정 조건: 전원 연결, 윈도우 전원 모드 '최고 성능', 다른 앱 종료
 
-스레드 조건: 주 **12** / 보조 **4**(Raspberry Pi 5의 4코어 모사).
+왜 순서를 섞나 (2026-10-07 리허설, COCO YOLO11n 1280x384): 모델마다 3회를 **연속**으로 재던 방식에서
+같은 모델의 3회 p50 이 최대 17~34% 달랐다 (int8 4스레드 27.54 / 22.31 / 20.51 ms).
+노트북 CPU 는 터보·전력 한도·발열로 시간에 따라 속도가 변해서, 연속 측정이면 '언제 쟀는지'가 모델 비교에 섞인다.
+
+스레드 조건: 주 **12** / 보조 **4**(Raspberry Pi 5의 4코어 모사) — 640x640 FP32 스윕(9/1)에서 정한 값.
 vCPU 16을 초과하면(22스레드) 컨텍스트 스위칭으로 p99가 6배 악화된다.
+**재확인 필요**: 같은 리허설에서 1280x384 는 7개 모델 모두 4스레드 p50 이 12스레드보다 3.5~8.9% 빨랐고,
+INT8 6개는 p99 도 4스레드가 같거나 좋았다 (FP32 p99 만 12스레드가 좋음). 흔들림 범위 안이라 아직 결론 아님.
+최종 측정 전에 `make thread-sweep` 으로 실제 모델에서 다시 정하고, 정한 조건을 측정 전에 커밋한다.
 
 ## AP40 평가 — 공식 판정 엔진 사용
 
