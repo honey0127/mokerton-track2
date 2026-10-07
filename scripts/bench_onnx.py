@@ -8,7 +8,7 @@
   - 메모리: psutil peak RSS
   - 보고 지표는 평균이 아니라 p50 + p99. 최악 프레임 지연이 안전과 직결된다.
 
-  python scripts/bench_onnx.py models/x.onnx --imgsz 1280x384 --threads 12 --repeat 3
+  python scripts/bench_onnx.py models/x.onnx --threads 4 --repeat 3     (여러 모델 비교는 bench_suite.py)
 """
 from __future__ import annotations
 import argparse, gc, json, os, statistics as st, time
@@ -70,7 +70,7 @@ def main():
     ap.add_argument("model")
     ap.add_argument("--imgsz", default=None,
                     help="미지정 시 모델 입력 크기를 그대로 쓴다 (1280x384 / 640x192 모델이 섞여 있어도 안전)")
-    ap.add_argument("--threads", type=int, default=12)
+    ap.add_argument("--threads", type=int, default=4)
     ap.add_argument("--repeat", type=int, default=3,
                     help="전체 측정 반복 횟수. 단발 측정의 10%% 미만 차이는 결론으로 삼지 않는다.")
     ap.add_argument("--runs", type=int, default=RUNS)

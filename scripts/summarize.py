@@ -42,7 +42,7 @@ def main():
                     help="이 split 의 AP40 기록만 쓴다 (holdout 튜닝 기록과 섞이지 않게)")
     ap.add_argument("--out", default=None)
     ap.add_argument("--plot", default=None, help="Pareto 그림 저장 경로 (예: benchmarks/pareto.png)")
-    ap.add_argument("--threads", default="12,4", help="표에 넣을 스레드 조건")
+    ap.add_argument("--threads", default="4,12", help="표에 넣을 스레드 조건. 첫 값이 주 조건(속도배율 기준)")
     a = ap.parse_args()
     threads = [int(t) for t in a.threads.split(",")]
 
@@ -94,7 +94,7 @@ def main():
     notes = ["", f"- 정확도 기록: {a.split} 기준.",
              "- Drop(점) = FP32 mAP - 해당 모델 mAP. Drop Rate = Drop(점) / FP32 mAP x 100. 같은 해상도의 FP32 가 기준.",
              "- GFLOPs 는 연산 횟수라 정밀도와 무관하게 같다 (INT8 은 같은 연산을 더 싼 정수 연산으로 한다).",
-             "- 지연은 bench_onnx.py (batch 1, warm-up 30, 300회 x 3반복의 중앙값) 기준, 한 PC 에서만 측정."]
+             "- 지연은 bench_suite.py 기준: batch 1, 예열 120초 후 모델·스레드 순서를 섞은 5라운드(각 warm-up 30 + 300회)의 중앙값. 한 PC 에서만 측정."]
     if e2e:
         notes.append("- 전처리/추론/후처리 평균(ms, predict_kitti.py): " + "; ".join(
             f"{k}: {v['pre_ms']}/{v['infer_ms']}/{v['post_ms']}" for k, v in sorted(e2e.items())))

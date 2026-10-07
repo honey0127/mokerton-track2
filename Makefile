@@ -10,8 +10,15 @@ LONG       := $(shell echo $(IMGSZ)|cut -dx -f1)
 WEIGHTS    ?= runs/kitti_$(LONG)/weights/best.pt
 EPOCHS     ?= 100
 BATCH      ?= 16
-THREADS    ?= 12
-REPEAT     ?= 3
+# 스레드 조건: 주 4 (라즈베리파이 5 = 4코어, 2026-10-07 스윕 근거는 README) / 보조 12
+MAIN_T     ?= 4
+SUB_T      ?= 12
+# 측정 전 예열(초). 처음 1분 남짓은 터보로 빨라 '지속 성능'과 다르다
+SOAK       ?= 120
+# 측정 라운드 수. bench_suite.py 가 라운드마다 (모델, 스레드) 순서를 섞어 1회씩 잰다
+ROUNDS     ?= 5
+# thread-sweep 대상 (기본: 1280 FP32 와 INT8-mixed)
+SWEEP      ?= $(MODELS)/$(WSTEM)_$(IMGSZ)_op13_fp32.onnx $(MODELS)/$(WSTEM)_$(IMGSZ)_op13_int8-mixed.onnx
 NCALIB     ?= 256
 SPLIT      ?= eval_val
 TOPK       ?= 2,4,8
@@ -25,7 +32,7 @@ EXCL_BOX   := $(MODELS)/exclude_$(WSTEM)_$(IMGSZ)_box.txt
 CALIB      := $(YOLO_DIR)/images/train
 Q          := python scripts/quantize_ort.py --model $(FP32) --calib $(CALIB) --n-calib $(NCALIB) --imgsz $(IMGSZ)
 
-.PHONY: setup splits data train export quantize quantize-extra sensitivity bench-all eval eval-all summary selftest clean
+.PHONY: setup splits data train export quantize quantize-extra sensitivity bench-all thread-sweep eval eval-all summary selftest clean
 
 setup:
 	pip install -r requirements.txt
@@ -68,24 +75,30 @@ sensitivity:               ## 층별 민감도 -> 하위 k개 모듈 FP32 유지
 	  $(Q) --exclude $(MODELS)/exclude_$(WSTEM)_$(IMGSZ)_op13_int8-mixed_sens_top$$k.txt --suffix sens$$k; \
 	done
 
-bench-all:                 ## 지연·메모리. 반드시 성능 담당자 PC 한 대에서만 (입력 크기는 모델에서 자동)
-	@for m in $(MODELS)/*.onnx; do \
-	  python scripts/bench_onnx.py $$m --threads $(THREADS) --repeat $(REPEAT) --jsonl $(JSONL); \
-	  python scripts/bench_onnx.py $$m --threads 4 --repeat $(REPEAT) --jsonl $(JSONL); \
-	done
+bench-all:                 ## 지연·메모리. 성능 담당자 PC 한 대에서만. 모델·스레드 순서를 섞어 ROUNDS 라운드
+	python scripts/bench_suite.py $(MODELS)/*.onnx --threads $(MAIN_T),$(SUB_T) --rounds $(ROUNDS) --soak $(SOAK) --jsonl $(JSONL)
+
+thread-sweep:              ## 주 스레드 조건 재확인 (FP32·INT8-mixed, 2~16 스레드, 기록은 따로)
+	python scripts/bench_suite.py $(SWEEP) --threads 2,4,6,8,12,16 --rounds 3 --runs 150 --soak $(SOAK) \
+	  --tag thread-sweep --jsonl benchmarks/thread_sweep.jsonl --raw benchmarks/thread_sweep_rounds.jsonl
+
+# eval 의 선택 인자: EXTRA="--drop-stride 32" SUFFIX=_noP5  -> P5 헤드를 뗀 것처럼 채점 (재학습 없는 근사)
+EXTRA      ?=
+SUFFIX     ?=
+ETAG        = $(notdir $(basename $(MODEL)))$(SUFFIX)
 
 eval:                      ## 점수 1개. MODEL=models/xxx.onnx  (튜닝·선택은 SPLIT=holdout, 보고 수치는 기본 eval_val)
 	python scripts/predict_kitti.py --model $(MODEL) --images $(YOLO_DIR)/images/$(SPLIT) \
-	  --split splits/$(SPLIT).txt --out runs/pred_$(SPLIT)_$(notdir $(basename $(MODEL))) --jsonl $(JSONL)
+	  --split splits/$(SPLIT).txt --out runs/pred_$(SPLIT)_$(ETAG) --threads $(MAIN_T) --jsonl $(JSONL) $(EXTRA)
 	python scripts/kitti_eval.py --gt $(KITTI_ROOT)/training/label_2 \
-	  --pred runs/pred_$(SPLIT)_$(notdir $(basename $(MODEL))) --split splits/$(SPLIT).txt \
-	  --tag $(notdir $(basename $(MODEL))) --out benchmarks/ap40_$(SPLIT)_$(notdir $(basename $(MODEL))).json --jsonl $(JSONL)
+	  --pred runs/pred_$(SPLIT)_$(ETAG) --split splits/$(SPLIT).txt \
+	  --tag $(ETAG) --out benchmarks/ap40_$(SPLIT)_$(ETAG).json --jsonl $(JSONL)
 
 eval-all:                  ## models/ 의 모든 ONNX 채점 (SPLIT=holdout 가능)
 	@for m in $(MODELS)/*.onnx; do $(MAKE) --no-print-directory eval MODEL=$$m SPLIT=$(SPLIT) JSONL=$(JSONL); done
 
 summary:                   ## results.jsonl -> 보고서 표 (Drop Rate, 속도배율 포함). SPLIT 별로 따로 만든다
-	python scripts/summarize.py --jsonl $(JSONL) --split splits/$(SPLIT).txt --out benchmarks/summary_$(SPLIT).md \
+	python scripts/summarize.py --jsonl $(JSONL) --threads $(MAIN_T),$(SUB_T) --split splits/$(SPLIT).txt --out benchmarks/summary_$(SPLIT).md \
 	  --plot benchmarks/pareto_$(SPLIT).png
 
 clean:
