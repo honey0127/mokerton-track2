@@ -13,3 +13,8 @@ __pycache__/
 benchmarks/raw/
 # benchmarks/results.jsonl 은 측정 원본이므로 반드시 커밋한다
 !benchmarks/results.jsonl
+# Hailo DFC 실행 부산물
+*.log
+.install_logs/
+calib/
+*_quantized_model.html

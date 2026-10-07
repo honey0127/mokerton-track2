@@ -1,10 +1,15 @@
 # .venv-train 전용. .venv-hailo(DFC)와 절대 합치지 않는다 (numpy/protobuf 충돌).
-ultralytics>=8.4
-torch>=2.4
-torchvision
-onnx>=1.16
-onnxruntime>=1.18
+# 버전 고정: 학습 PC(GPU)와 측정 PC(WSL)가 같은 버전을 써야 .pt 호환과 재현이 보장된다.
+# 2026-10-06 기준 팀 환경(README '환경' 표)과 동일하게 맞췄다.
+ultralytics==8.4.135
+onnx==1.22.0
+onnxruntime==1.29.0
+numba>=0.60            # 공식 KITTI AP40 판정 엔진(third_party/kitti_object_eval_python)
 opencv-python-headless
 numpy
 psutil
 thop
+pyyaml
+# torch / torchvision 은 PC 마다 설치 명령이 다르다:
+#   측정 PC(WSL, CPU): pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+#   학습 PC(NVIDIA) : https://pytorch.org 에서 CUDA 버전에 맞는 명령으로 설치

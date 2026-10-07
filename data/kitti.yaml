@@ -1,6 +1,11 @@
 # Ultralytics 데이터셋 설정 — scripts/kitti_to_yolo.py 출력 전용
 # val 은 자체 홀드아웃(500장)이다. 공식 점수는 eval_val 1000장으로만 낸다.
-path: ../data/kitti_yolo
+#
+# path 는 '이 yaml 파일 위치'가 아니라 '명령을 실행한 폴더(저장소 루트)' 기준이다.
+# (Ultralytics 8.4.135 data/utils.py check_det_dataset 확인, 2026-10-06)
+# 예전 값 ../data/kitti_yolo 는 저장소 루트에서 실행하면 <저장소 상위>/data/kitti_yolo 를 찾아 실패했다.
+# 반드시 저장소 루트에서 make train / python scripts/train_kitti.py 를 실행한다.
+path: data/kitti_yolo
 train: images/train
 val: images/holdout
 test: images/eval_val

@@ -21,6 +21,9 @@ def main():
                     help="Detect 모듈 노드명 접두사. 미지정 시 자동 탐지 (예: /model.23/)")
     ap.add_argument("--keep-conv", action="store_true", default=True,
                     help="헤드 내부 Conv는 양자화 대상으로 남긴다 (기본)")
+    ap.add_argument("--box-fp32", action="store_true",
+                    help=("박스 회귀 경로(cv2.*.2 마지막 Conv 3개 + DFL Conv)도 FP32 로 남긴다. "
+                          "KITTI Car 는 IoU 0.7 이라 위치 오차에 민감하다 — 'mixed' 와 정확도/지연을 비교할 것"))
     a = ap.parse_args()
 
     m = onnx.load(a.model)
@@ -47,6 +50,9 @@ def main():
         if makes_output:
             exclude.append(n.name)
         elif in_head and not (a.keep_conv and n.op_type == "Conv"):
+            exclude.append(n.name)
+        elif in_head and a.box_fp32 and n.op_type == "Conv" and (
+                "/dfl/" in n.name or ("/cv2." in n.name and n.name.endswith(".2/Conv"))):
             exclude.append(n.name)
 
     exclude = sorted(set(exclude))

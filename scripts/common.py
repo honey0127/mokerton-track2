@@ -40,14 +40,18 @@ def parse_imgsz(s):
 
 
 def letterbox(img, dst_w, dst_h, color=114):
-    """종횡비 유지 리사이즈 + 중앙 패딩. (out, scale, pad_x, pad_y) 반환."""
+    """종횡비 유지 리사이즈 + 중앙 패딩. (out, scale, pad_x, pad_y) 반환.
+
+    보간은 항상 INTER_LINEAR — Ultralytics predict 의 LetterBox, 그리고 학습(augment) 경로의
+    리사이즈와 같게 맞춘다. 축소 시 INTER_AREA 를 쓰면 640x192 에서 Ultralytics 결과와
+    박스·점수가 미세하게 달라진다 (2026-10-06 확인: 1280x384 는 원래도 일치).
+    """
     import cv2
     h, w = img.shape[:2]
     r = min(dst_w / w, dst_h / h)
     nw, nh = int(round(w * r)), int(round(h * r))
     if (nw, nh) != (w, h):
-        interp = cv2.INTER_LINEAR if r > 1 else cv2.INTER_AREA
-        img = cv2.resize(img, (nw, nh), interpolation=interp)
+        img = cv2.resize(img, (nw, nh), interpolation=cv2.INTER_LINEAR)
     pad_x, pad_y = (dst_w - nw) / 2, (dst_h - nh) / 2
     l, t = int(round(pad_x - 0.1)), int(round(pad_y - 0.1))
     b, rr = dst_h - nh - t, dst_w - nw - l
@@ -124,6 +128,13 @@ def decode_yolo(out, r, px, py, oh, ow, conf_thr=0.001, iou_thr=0.65, max_det=30
             res.append((c, float(sc[i]), *[float(v) for v in b[i]]))
     res.sort(key=lambda t: -t[1])
     return res[:max_det]
+
+
+def model_input_wh(sess):
+    """ONNX Runtime 세션의 고정 입력 크기 -> (W, H). 동적 축이면 None."""
+    shp = sess.get_inputs()[0].shape          # [1, 3, H, W]
+    h, w = shp[2], shp[3]
+    return (w, h) if isinstance(w, int) and isinstance(h, int) else None
 
 
 def jsonl_append(path, rec):
