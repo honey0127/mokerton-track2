@@ -17,7 +17,7 @@ make quantize                                # 640 은 WEIGHTS=runs/kitti_640/we
 make quantize-extra                          # 박스경로 FP32 / Percentile / Entropy 비교
 make sensitivity                             # 층별 민감도 -> 하위 2/4/8 모듈 FP32 유지 모델
 make thread-sweep                            # 스레드 조건 재확인 (학습 모델로 1번, 예열 120초 포함)
-make bench-all                               # 지연·메모리: 성능 담당 PC 한 대에서만, 예열 후 순서 섞은 5라운드, 4·12스레드
+make bench-all                               # 지연·메모리: 성능 담당 PC 한 대에서만, 예열 후 순서 섞은 5라운드, 4·8스레드
 make eval-all SPLIT=holdout                  # 고르기·튜닝은 holdout 으로
 make eval-all                                # 보고 수치: eval_val 1,000장
 make summary                                 # -> benchmarks/summary_eval_val.md (Drop Rate 표)
@@ -255,6 +255,31 @@ Ultralytics 는 `path:` 상대경로를 yaml 파일 위치가 아니라 현재 �
 `path: ../data/kitti_yolo` 는 저장소 루트에서 실행하면 저장소 바깥을 찾아 학습이 시작되지 않았다.
 `path: data/kitti_yolo` 로 고치고, `train_kitti.py` 가 루트 기준 절대경로로 바꾼 사본을 넘긴다.
 
+### 7. INT8 점수가 CPU 에 따라 달라진다 -> 가중치 7비트(reduce_range)를 기본으로
+공용 PC(i9-14900KF)에서 만든 INT8 ONNX 를 측정 노트북(i7-10510U)으로 옮겨 같은 holdout 500장을 채점하니,
+FP32 4개는 소수점까지 같은데 INT8 만 전부 1~3점 낮았다 (2026-10-13). Moderate mAP, INT8 은 mixed-percentile:
+
+| 구성 | FP32 (두 PC 동일) | 8비트, 공용 PC | 8비트, 측정 노트북 | **7비트, 측정 노트북** |
+|---|---|---|---|---|
+| A 1280x384 | 97.22 | 96.93 | 94.25 | **96.76** |
+| B 1280x384, P5 제거 | 97.17 | 96.13 | 95.07 | **96.57** |
+| C 640x192 | 92.41 | 91.32 | 88.98 | **90.25** |
+| D 640x192, P5 제거 | 91.67 | 90.30 | 89.45 | **90.27** |
+
+원인: 우리 설정은 활성값 uint8 x 가중치 int8 이다. ORT 는 AVX2/AVX512 에서 이 곱셈을 `VPMADDUBSW` 로 하는데,
+이웃한 두 곱을 int16 에 더하므로 255 x 127 x 2 = 64,770 이 32,767 을 넘으면 잘린다(포화). VNNI 가 있는 x86 과
+ARM 에는 이 문제가 없다 (ORT 양자화 문서의 saturation 항목). 측정 노트북은 AVX2 만 있고 VNNI 가 없다.
+
+해결: `quantize_ort.py` 가 `reduce_range=True` 를 기본으로 쓴다. 가중치가 [-64, 64] 로 줄어 255 x 64 x 2 = 32,640 으로
+포화가 날 수 없다 (양자화된 Conv 가중치 범위를 직접 확인: 8비트 [-127, 127] -> 7비트 [-64, 64]).
+이전 방식은 `--no-reduce-range` 로만 만든다. 8비트 모델의 두 PC 기록은 `benchmarks/pc5070/`,
+`benchmarks/laptop_int8_8bit/` 에 그대로 남겼다.
+
+- 모델 선택이 뒤집힐 뻔했다: 8비트·공용 PC 기준으로는 A 가 B 보다 0.80점 높지만, 같은 8비트 파일을 측정 노트북에서
+  채점하면 B 가 0.82점 높다. 어느 PC 에서 채점했는지에 따라 순위가 바뀌는 수치로는 모델을 고를 수 없다
+- 심사 PC 에 VNNI 가 없으면 8비트 모델은 보고한 점수보다 낮게 재현된다 — 7비트로 바꾼 직접적인 이유
+- 남은 확인: 7비트 모델을 VNNI 가 있는 PC 에서도 채점해 같은 점수가 나오는지 (재현 검증 때)
+
 ## Hailo-10H 컴파일 (R3, 본선 대비)
 
 Ultralytics 8.4.135 에 `format="hailo"` 내보내기가 들어 있다 (`engine/exporter.py` `export_hailo` 확인).
@@ -292,6 +317,22 @@ GPU 없이 돌리면 finetune 단계가 매우 느리거나 DFC 가 최적화 �
 | Ultralytics | 8.4.135 |
 
 > WSL2는 P/E 코어 구분을 게스트에 노출하지 않는다. `lscpu`는 균질한 16 vCPU로만 보고한다.
+
+**2026-10-13 측정 PC 변경.** 지연·메모리 측정과 채점은 아래 노트북 한 대에서 한다 (WSL 없이 윈도우에서 실행).
+위 표의 WSL 노트북으로 잰 값(10/7 리허설·스레드 스윕)은 방법론의 근거로만 남기고 결과 표에는 섞지 않는다.
+
+| 구분 | 사양 |
+|---|---|
+| 기종 / OS | Samsung 750QCJ 노트북 / Windows 11 Pro (10.0.26100) |
+| CPU | Intel Core i7-10510U — 4코어 8스레드, AVX2, **VNNI 없음** (트러블슈팅 7) |
+| 메모리 | 8GB |
+| GPU | Intel UHD. NVIDIA 없음 -> CUDA 미사용 |
+| Python | 3.12.10 |
+| PyTorch / torchvision | 2.13.0+cpu / 0.28.0+cpu |
+| ONNX / ONNX Runtime | 1.22.0 / 1.29.0 (CPUExecutionProvider) |
+| Ultralytics | 8.4.135 |
+| 스레드 조건 | 주 4 / 보조 8 (논리 코어가 8개라 12는 초과 구독이 된다) |
+| 전원 | 충전기 연결, 전원 구성표는 제조사 기본값(SAMSUNG MODE) 그대로 |
 
 venv 2개 분리 운영: `.venv-train`(Ultralytics/ONNX) / `.venv-hailo`(DFC 전용).
 numpy·protobuf 버전이 충돌하므로 **절대 합치지 않는다.**

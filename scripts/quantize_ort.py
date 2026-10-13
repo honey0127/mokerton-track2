@@ -71,6 +71,12 @@ def main():
                     help="캘리브레이션을 N장씩 끊어 수집한다(메모리 상한). 0 이면 한 번에 수집")
     ap.add_argument("--suffix", default="",
                     help="출력 파일명 꼬리표 추가 (예: --suffix boxfp32 -> ..._int8-mixed-boxfp32.onnx)")
+    ap.add_argument("--reduce-range", dest="reduce_range", action="store_true", default=True,
+                    help=("가중치를 7비트로 양자화한다 (ORT reduce_range, 기본 ON). VNNI 가 없는 x86 CPU(AVX2 만 있는 PC)에서는 "
+                          "ORT 가 U8xS8 곱셈에 VPMADDUBSW 를 써서 16비트 포화가 나고, 같은 INT8 모델의 점수가 CPU 마다 "
+                          "달라진다 (README 트러블슈팅 7). 7비트면 255 x 64 x 2 < 32767 이라 포화가 없다"))
+    ap.add_argument("--no-reduce-range", dest="reduce_range", action="store_false",
+                    help="가중치 8비트 (2026-10-13 이전 방식). CPU 간 점수 차이를 재현할 때만 쓴다")
     a = ap.parse_args()
 
     import onnxruntime as ort
@@ -129,11 +135,13 @@ def main():
         kw["op_types_to_quantize"] = [s.strip() for s in a.op_types.split(",")]
     if excl:
         kw["nodes_to_exclude"] = excl
+    if a.reduce_range:
+        kw["reduce_range"] = True
 
     quantize_static(a.model, out, **kw)
     print(f"QUANTIZED: {out}")
     print(f"  calib={len(files)}장 method={a.calib_method} chunk={a.chunk} per_channel={a.per_channel} "
-          f"op_types={a.op_types or 'ALL'} excluded={len(excl) if excl else 0}")
+          f"reduce_range={a.reduce_range} op_types={a.op_types or 'ALL'} excluded={len(excl) if excl else 0}")
 
 
 if __name__ == "__main__":

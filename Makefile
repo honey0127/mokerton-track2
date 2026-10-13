@@ -10,9 +10,10 @@ LONG       := $(shell echo $(IMGSZ)|cut -dx -f1)
 WEIGHTS    ?= runs/kitti_$(LONG)/weights/best.pt
 EPOCHS     ?= 100
 BATCH      ?= 16
-# 스레드 조건: 주 4 (라즈베리파이 5 = 4코어, 2026-10-07 스윕 근거는 README) / 보조 12
+# 스레드 조건: 주 4 (라즈베리파이 5 = 4코어, 2026-10-07 스윕 근거는 README) / 보조 8
+# (2026-10-13 측정 PC 가 4코어 8스레드 노트북으로 바뀌어 보조를 12 -> 8 로. 16 vCPU PC 에서는 SUB_T=12)
 MAIN_T     ?= 4
-SUB_T      ?= 12
+SUB_T      ?= 8
 # 측정 전 예열(초). 처음 1분 남짓은 터보로 빨라 '지속 성능'과 다르다
 SOAK       ?= 120
 # 측정 라운드 수. bench_suite.py 가 라운드마다 (모델, 스레드) 순서를 섞어 1회씩 잰다
