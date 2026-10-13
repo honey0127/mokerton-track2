@@ -1,0 +1,36 @@
+{
+  "train": {
+    "kept:Car": 25271,
+    "kept:Cyclist": 1260,
+    "kept:Pedestrian": 3768,
+    "merged:Person_sitting->Pedestrian": 173,
+    "merged:Van->Car": 2326,
+    "skip:DontCare": 8978,
+    "skip:Misc": 790,
+    "skip:Tram": 392,
+    "skip:Truck": 882,
+    "skip:degenerate": 3
+  },
+  "holdout": {
+    "kept:Car": 2157,
+    "kept:Cyclist": 130,
+    "kept:Pedestrian": 310,
+    "merged:Person_sitting->Pedestrian": 19,
+    "merged:Van->Car": 213,
+    "skip:DontCare": 796,
+    "skip:Misc": 56,
+    "skip:Tram": 44,
+    "skip:Truck": 70
+  },
+  "eval_val": {
+    "kept:Car": 4226,
+    "kept:Cyclist": 237,
+    "kept:Pedestrian": 630,
+    "merged:Person_sitting->Pedestrian": 30,
+    "merged:Van->Car": 375,
+    "skip:DontCare": 1521,
+    "skip:Misc": 127,
+    "skip:Tram": 75,
+    "skip:Truck": 142
+  }
+}
