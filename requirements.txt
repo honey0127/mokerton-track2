@@ -8,7 +8,7 @@ numba>=0.60            # 공식 KITTI AP40 판정 엔진(third_party/kitti_objec
 opencv-python-headless
 numpy
 psutil
-thop
+ultralytics-thop==2.2.2  # GFLOPs 계산기. 옛 'thop'(0.1.1)을 같이 깔면 같은 thop/ 폴더를 덮어써 값이 달라진다 (1280x384: 7.66 -> 7.58)
 pyyaml
 # torch / torchvision 은 PC 마다 설치 명령이 다르다:
 #   측정 PC(WSL, CPU): pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
