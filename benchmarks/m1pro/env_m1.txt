@@ -1,0 +1,10 @@
+date: 2026-10-15 01:28:38 KST
+cpu: Apple M1 Pro
+cores: P=6 E=2 logical=8
+memory_GB: 16
+macos: 27.0.1 (26A434)
+python: 3.12.15
+onnxruntime: 1.29.0
+numpy: 2.5.4
+power: Now drawing from 'AC Power'
+lowpowermode: 0

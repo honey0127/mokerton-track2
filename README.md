@@ -335,6 +335,19 @@ GPU 없이 돌리면 finetune 단계가 매우 느리거나 DFC 가 최적화 �
 | 스레드 조건 | 주 4 / 보조 8 (논리 코어가 8개라 12는 초과 구독이 된다) |
 | 전원 | 충전기 연결, 전원 구성표는 제조사 기본값(SAMSUNG MODE) 그대로 |
 
+**2026-10-15 측정 PC 변경 (보고서 수치).** 지연·메모리는 Apple M1 Pro 에서, eval_val 정확도는 VNNI 가 있는 x86 에서 잰다.
+i7-10510U 15라운드(benchmarks/bench_key15.jsonl)는 다른 CPU 에서의 경향 확인용 보조 기록으로 남긴다.
+
+| 구분 | 속도·메모리 (주) | 정확도 채점 |
+|---|---|---|
+| CPU | Apple M1 Pro (P코어 6 + E코어 2), arm64 | Intel Xeon 2.80GHz, AVX-512 VNNI, 2 vCPU (클라우드 컨테이너) |
+| 메모리 / OS | 16GB / macOS 27.0.1 | 8GB / Ubuntu 24.04.5 LTS |
+| Python / ORT | 3.12.15 / onnxruntime 1.29.0 | 3.13 / onnxruntime 1.29.0 |
+| 실행 | `bash run_m1.sh key` (OUT=benchmarks/m1pro) | `make eval-all` (2스레드) |
+| 기록 | `benchmarks/m1pro/` | `benchmarks/eval_val_cloud/`, `benchmarks/summary_eval_val.md` |
+
+맥 주의: onnxruntime 1.29.0 맥 휠은 macOS 14 이상 전용이다 (macOS 13 에서는 pip 가 1.23.2 까지만 찾는다). arm64 Python 3.10+ 필요.
+
 venv 2개 분리 운영: `.venv-train`(Ultralytics/ONNX) / `.venv-hailo`(DFC 전용).
 numpy·protobuf 버전이 충돌하므로 **절대 합치지 않는다.**
 

@@ -1,0 +1,45 @@
+{
+  "Car/Easy": {
+    "AP40": 99.67,
+    "n_gt": 807
+  },
+  "Car/Moderate": {
+    "AP40": 98.54,
+    "n_gt": 2091
+  },
+  "Car/Hard": {
+    "AP40": 97.61,
+    "n_gt": 2873
+  },
+  "Pedestrian/Easy": {
+    "AP40": 92.05,
+    "n_gt": 291
+  },
+  "Pedestrian/Moderate": {
+    "AP40": 89.61,
+    "n_gt": 473
+  },
+  "Pedestrian/Hard": {
+    "AP40": 86.82,
+    "n_gt": 570
+  },
+  "Cyclist/Easy": {
+    "AP40": 98.45,
+    "n_gt": 91
+  },
+  "Cyclist/Moderate": {
+    "AP40": 95.38,
+    "n_gt": 138
+  },
+  "Cyclist/Hard": {
+    "AP40": 92.08,
+    "n_gt": 155
+  },
+  "mAP/Easy": 96.72,
+  "mAP/Moderate": 94.51,
+  "mAP/Hard": 92.17,
+  "tag": "best_1280x384_op13_fp32",
+  "n_images": 1000,
+  "split": "splits/eval_val.txt",
+  "engine": "kitti_object_eval_python (official devkit port)"
+}
