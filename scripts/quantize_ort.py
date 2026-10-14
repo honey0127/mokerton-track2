@@ -67,6 +67,8 @@ def main():
     ap.add_argument("--per-channel", action="store_true", default=True)
     ap.add_argument("--calib-method", default="minmax",
                     choices=["minmax", "percentile", "entropy"])
+    ap.add_argument("--percentile", type=float, default=None,
+                    help="Percentile 보정의 백분위 (ORT 기본 99.999). 지정하면 파일 이름에 -pXXXX 가 붙는다")
     ap.add_argument("--chunk", type=int, default=8,
                     help="캘리브레이션을 N장씩 끊어 수집한다(메모리 상한). 0 이면 한 번에 수집")
     ap.add_argument("--suffix", default="",
@@ -107,6 +109,8 @@ def main():
         tag += "-mixed"
     if a.calib_method != "minmax":      # 캘리브레이션 비교 실험에서 파일이 서로 덮어쓰지 않게
         tag += f"-{a.calib_method}"
+    if a.percentile is not None:
+        tag += "-p" + f"{a.percentile:g}".replace(".", "")
     if a.suffix:
         tag += f"-{a.suffix}"
     out = a.out or str(Path(a.model).with_name(
@@ -131,6 +135,8 @@ def main():
             files = files[: len(files) // a.chunk * a.chunk]   # ORT 는 나누어떨어져야 한다
             kw["calibration_data_reader"] = LetterboxReader(files, iname, w, h)
         kw["extra_options"]["CalibStridedMinMax"] = a.chunk  # 이름과 달리 세 방식 모두에 적용된다
+    if a.percentile is not None:
+        kw["extra_options"]["CalibPercentile"] = a.percentile
     if a.op_types:
         kw["op_types_to_quantize"] = [s.strip() for s in a.op_types.split(",")]
     if excl:
