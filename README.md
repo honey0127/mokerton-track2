@@ -109,6 +109,7 @@ KITTI 원본 1242x375. 정사각 640x640은 letterbox 패딩에 NPU 연산을 �
 | `scripts/quantize_ort.py` | 정적 INT8 PTQ. `--op-types` / `--exclude` / `--calib-method` |
 | `scripts/diag_outputs.py` | FP32 대비 출력 텐서 분포 비교 (클래스 점수 소실 진단) |
 | `scripts/bench_onnx.py` | 결정론적 지연/메모리 측정, jsonl 누적 |
+| `scripts/bench_compare.py` | 두 모델의 속도 비와 95% 구간 (10% 안쪽 차이를 말할 수 있는지 확인) |
 | `scripts/model_stats.py` | params / GFLOPs (해상도별) |
 | `scripts/predict_kitti.py` | ONNX -> KITTI 포맷 예측 덤프 + 전처리/추론/후처리 시간 기록 |
 | `scripts/kitti_eval.py` | **Moderate AP40** (공식 판정 엔진) + 규칙 자체검증 17종 |
