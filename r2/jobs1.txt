@@ -1,0 +1,10 @@
+repro_B_percentile|models/best-p34_1280x384_op13_fp32.onnx|models/exclude_best-p34_1280x384.txt|percentile|
+repro_D_percentile|models/best-p34_640x192_op13_fp32.onnx|models/exclude_best-p34_640x192.txt|percentile|
+P1_B_box|models/best-p34_1280x384_op13_fp32.onnx|r2/models/exclude_best-p34_1280x384_box.txt|percentile|
+P1_D_box|models/best-p34_640x192_op13_fp32.onnx|r2/models/exclude_best-p34_640x192_box.txt|percentile|
+P3_D_p9999|models/best-p34_640x192_op13_fp32.onnx|models/exclude_best-p34_640x192.txt|percentile|--percentile 99.99
+P3_D_p999999|models/best-p34_640x192_op13_fp32.onnx|models/exclude_best-p34_640x192.txt|percentile|--percentile 99.9999
+P3_D_entropy|models/best-p34_640x192_op13_fp32.onnx|models/exclude_best-p34_640x192.txt|entropy|
+P3_B_p9999|models/best-p34_1280x384_op13_fp32.onnx|models/exclude_best-p34_1280x384.txt|percentile|--percentile 99.99
+P3_B_p999999|models/best-p34_1280x384_op13_fp32.onnx|models/exclude_best-p34_1280x384.txt|percentile|--percentile 99.9999
+P3_B_entropy|models/best-p34_1280x384_op13_fp32.onnx|models/exclude_best-p34_1280x384.txt|entropy|
