@@ -18,3 +18,4 @@ benchmarks/raw/
 .install_logs/
 calib/
 *_quantized_model.html
+r2/logs/
