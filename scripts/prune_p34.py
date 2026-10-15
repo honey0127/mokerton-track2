@@ -118,9 +118,9 @@ def cmd_train(a):
     sys.path.insert(0, str(HERE))
     from train_kitti import resolved_data_yaml
     from ultralytics.models.yolo.detect import DetectionTrainer
-    from ultralytics.nn.tasks import attempt_load_one_weight
+    from ultralytics.nn.tasks import load_checkpoint
 
-    model, _ = attempt_load_one_weight(a.pruned)
+    model, _ = load_checkpoint(a.pruned)
     model = model.float()
     for p in model.parameters():
         p.requires_grad_(True)
