@@ -1,0 +1,271 @@
+tranogang@tranogangui-noteubug mokerton-push % cd ~/Documents/mokerton-push && git branch --set-upstream-to=origin/prelim/laptop-measure && git pull && PY=$(uv python find 3.12) bash run_m1.sh p
+branch 'prelim/laptop-measure' set up to track 'origin/prelim/laptop-measure'.
+Updating d00cb5b..5c08b83
+Fast-forward
+ ...base_B_1280x384_op13_int8-mixed-percentile.json | 2279 ++++++++++++++++++++
+ ..._base_D_640x192_op13_int8-mixed-percentile.json | 2279 ++++++++++++++++++++
+ models/r2/base_D_640x192_op13_P1_box.onnx          |  Bin 0 -> 2302651 bytes
+ .../base_D_640x192_op13_int8-mixed-percentile.onnx |  Bin 0 -> 2285518 bytes
+ r2/S_prune_holdout.md                              |   40 +
+ r2/S_quant_P_holdout.md                            |  136 ++
+ r2/pc5070/ap40/S_B_m60_1280x384_op13_fp32.json     |   45 +
+ ..._B_m60_1280x384_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/ap40/S_B_m75_1280x384_op13_fp32.json     |   45 +
+ ..._B_m75_1280x384_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/ap40/S_D_m60_640x192_op13_fp32.json      |   45 +
+ ...S_D_m60_640x192_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/ap40/S_D_m75_640x192_op13_fp32.json      |   45 +
+ ...S_D_m75_640x192_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P1_box.json    |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P2_sens2.json  |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P2_sens4.json  |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P2_sens8.json  |   45 +
+ .../ap40/base_B_1280x384_op13_P3_entropy.json      |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P3_n1024.json  |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P3_n512.json   |   45 +
+ .../ap40/base_B_1280x384_op13_P3_n512_s1.json      |   45 +
+ .../ap40/base_B_1280x384_op13_P3_n512_s2.json      |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_P3_p9999.json  |   45 +
+ .../ap40/base_B_1280x384_op13_P3_p999999.json      |   45 +
+ .../ap40/base_B_1280x384_op13_P4_n512_box.json     |   45 +
+ .../ap40/base_B_1280x384_op13_P4_n512_box_s1.json  |   45 +
+ .../ap40/base_B_1280x384_op13_P4_n512_box_s2.json  |   45 +
+ .../ap40/base_B_1280x384_op13_P4_n512_sens4.json   |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_base_s1.json   |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_base_s2.json   |   45 +
+ r2/pc5070/ap40/base_B_1280x384_op13_fp32.json      |   45 +
+ ...base_B_1280x384_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P1_box.json     |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P1_box_s1.json  |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P1_box_s2.json  |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P2_sens2.json   |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P2_sens4.json   |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P2_sens8.json   |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P3_entropy.json |   45 +
+ .../ap40/base_D_640x192_op13_P3_entropy_s1.json    |   45 +
+ .../ap40/base_D_640x192_op13_P3_entropy_s2.json    |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P3_n1024.json   |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P3_n512.json    |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P3_p9999.json   |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_P3_p999999.json |   45 +
+ .../ap40/base_D_640x192_op13_P4_entropy_box.json   |   45 +
+ .../base_D_640x192_op13_P4_entropy_box_s1.json     |   45 +
+ .../base_D_640x192_op13_P4_entropy_box_s2.json     |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_base_s1.json    |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_base_s2.json    |   45 +
+ r2/pc5070/ap40/base_D_640x192_op13_fp32.json       |   45 +
+ .../base_D_640x192_op13_int8-mixed-percentile.json |   45 +
+ r2/pc5070/models/exclude_S_B_m60_1280x384.txt      |   45 +
+ r2/pc5070/models/exclude_S_B_m75_1280x384.txt      |   45 +
+ r2/pc5070/models/exclude_S_D_m60_640x192.txt       |   45 +
+ r2/pc5070/models/exclude_S_D_m75_640x192.txt       |   45 +
+ r2/pc5070/models/exclude_base_B_1280x384.txt       |   45 +
+ r2/pc5070/models/exclude_base_B_1280x384_box.txt   |   48 +
+ ...80x384_op13_int8-mixed-percentile_sens_top2.txt |   60 +
+ ...80x384_op13_int8-mixed-percentile_sens_top4.txt |   64 +
+ ...80x384_op13_int8-mixed-percentile_sens_top8.txt |   70 +
+ r2/pc5070/models/exclude_base_D_640x192.txt        |   45 +
+ r2/pc5070/models/exclude_base_D_640x192_box.txt    |   48 +
+ ...40x192_op13_int8-mixed-percentile_sens_top2.txt |   60 +
+ ...40x192_op13_int8-mixed-percentile_sens_top4.txt |   62 +
+ ...40x192_op13_int8-mixed-percentile_sens_top8.txt |   70 +
+ r2/pc5070/results.jsonl                            |   94 +
+ r2/pc5070/weights.sha256                           |    6 +
+ r2/run_pc5070.sh                                   |   35 +
+ r2/run_pc5070_P.sh                                 |   54 +
+ r2/run_pc5070_P4.sh                                |   46 +
+ r2/run_pc5070_Pseed.sh                             |   43 +
+ r2_P.sha256                                        |    2 +
+ run_m1.sh                                          |   12 +-
+ scripts/sensitivity.py                             |    5 +-
+ 76 files changed, 7895 insertions(+), 3 deletions(-)
+ create mode 100644 benchmarks/sensitivity_base_B_1280x384_op13_int8-mixed-percentile.json
+ create mode 100644 benchmarks/sensitivity_base_D_640x192_op13_int8-mixed-percentile.json
+ create mode 100644 models/r2/base_D_640x192_op13_P1_box.onnx
+ create mode 100644 models/r2/base_D_640x192_op13_int8-mixed-percentile.onnx
+ create mode 100644 r2/S_prune_holdout.md
+ create mode 100644 r2/S_quant_P_holdout.md
+ create mode 100644 r2/pc5070/ap40/S_B_m60_1280x384_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/S_B_m60_1280x384_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/ap40/S_B_m75_1280x384_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/S_B_m75_1280x384_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/ap40/S_D_m60_640x192_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/S_D_m60_640x192_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/ap40/S_D_m75_640x192_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/S_D_m75_640x192_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P1_box.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P2_sens2.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P2_sens4.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P2_sens8.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_entropy.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_n1024.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_n512.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_n512_s1.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_n512_s2.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_p9999.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P3_p999999.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P4_n512_box.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P4_n512_box_s1.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P4_n512_box_s2.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_P4_n512_sens4.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_base_s1.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_base_s2.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/base_B_1280x384_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P1_box.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P1_box_s1.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P1_box_s2.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P2_sens2.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P2_sens4.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P2_sens8.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_entropy.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_entropy_s1.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_entropy_s2.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_n1024.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_n512.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_p9999.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P3_p999999.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P4_entropy_box.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P4_entropy_box_s1.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_P4_entropy_box_s2.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_base_s1.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_base_s2.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_fp32.json
+ create mode 100644 r2/pc5070/ap40/base_D_640x192_op13_int8-mixed-percentile.json
+ create mode 100644 r2/pc5070/models/exclude_S_B_m60_1280x384.txt
+ create mode 100644 r2/pc5070/models/exclude_S_B_m75_1280x384.txt
+ create mode 100644 r2/pc5070/models/exclude_S_D_m60_640x192.txt
+ create mode 100644 r2/pc5070/models/exclude_S_D_m75_640x192.txt
+ create mode 100644 r2/pc5070/models/exclude_base_B_1280x384.txt
+ create mode 100644 r2/pc5070/models/exclude_base_B_1280x384_box.txt
+ create mode 100644 r2/pc5070/models/exclude_base_B_1280x384_op13_int8-mixed-percentile_sens_top2.txt
+ create mode 100644 r2/pc5070/models/exclude_base_B_1280x384_op13_int8-mixed-percentile_sens_top4.txt
+ create mode 100644 r2/pc5070/models/exclude_base_B_1280x384_op13_int8-mixed-percentile_sens_top8.txt
+ create mode 100644 r2/pc5070/models/exclude_base_D_640x192.txt
+ create mode 100644 r2/pc5070/models/exclude_base_D_640x192_box.txt
+ create mode 100644 r2/pc5070/models/exclude_base_D_640x192_op13_int8-mixed-percentile_sens_top2.txt
+ create mode 100644 r2/pc5070/models/exclude_base_D_640x192_op13_int8-mixed-percentile_sens_top4.txt
+ create mode 100644 r2/pc5070/models/exclude_base_D_640x192_op13_int8-mixed-percentile_sens_top8.txt
+ create mode 100644 r2/pc5070/results.jsonl
+ create mode 100644 r2/pc5070/weights.sha256
+ create mode 100644 r2/run_pc5070.sh
+ create mode 100644 r2/run_pc5070_P.sh
+ create mode 100644 r2/run_pc5070_P4.sh
+ create mode 100644 r2/run_pc5070_Pseed.sh
+ create mode 100644 r2_P.sha256
+[OK] python 3.12.15 arm64 / onnxruntime 1.29.0 / CPUExecutionProvider
+     (측정 스크립트는 CPUExecutionProvider 만 쓴다. CoreML/Neural Engine 은 쓰지 않는다)
+[점검] 모델 SHA256
+shasum: models/best_1280x384_op13_fp32.onnx: No such file or directory
+models/best_1280x384_op13_fp32.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8.onnx: No such file or directory
+models/best_1280x384_op13_int8.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8-conv.onnx: No such file or directory
+models/best_1280x384_op13_int8-conv.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8-mixed.onnx: No such file or directory
+models/best_1280x384_op13_int8-mixed.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8-mixed-boxfp32.onnx: No such file or directory
+models/best_1280x384_op13_int8-mixed-boxfp32.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8-mixed-entropy.onnx: No such file or directory
+models/best_1280x384_op13_int8-mixed-entropy.onnx: FAILED open or read
+shasum: models/best_1280x384_op13_int8-mixed-percentile.onnx: No such file or directory
+models/best_1280x384_op13_int8-mixed-percentile.onnx: FAILED open or read
+shasum: models/best_640x192_op13_fp32.onnx: No such file or directory
+models/best_640x192_op13_fp32.onnx: FAILED open or read
+shasum: models/best_640x192_op13_int8.onnx: No such file or directory
+models/best_640x192_op13_int8.onnx: FAILED open or read
+shasum: models/best_640x192_op13_int8-conv.onnx: No such file or directory
+models/best_640x192_op13_int8-conv.onnx: FAILED open or read
+shasum: models/best_640x192_op13_int8-mixed.onnx: No such file or directory
+models/best_640x192_op13_int8-mixed.onnx: FAILED open or read
+shasum: models/best_640x192_op13_int8-mixed-percentile.onnx: No such file or directory
+models/best_640x192_op13_int8-mixed-percentile.onnx: FAILED open or read
+shasum: models/best-p34_1280x384_op13_fp32.onnx: No such file or directory
+models/best-p34_1280x384_op13_fp32.onnx: FAILED open or read
+shasum: models/best-p34_1280x384_op13_int8.onnx: No such file or directory
+models/best-p34_1280x384_op13_int8.onnx: FAILED open or read
+shasum: models/best-p34_1280x384_op13_int8-conv.onnx: No such file or directory
+models/best-p34_1280x384_op13_int8-conv.onnx: FAILED open or read
+shasum: models/best-p34_1280x384_op13_int8-mixed.onnx: No such file or directory
+models/best-p34_1280x384_op13_int8-mixed.onnx: FAILED open or read
+shasum: models/best-p34_1280x384_op13_int8-mixed-percentile.onnx: No such file or directory
+models/best-p34_1280x384_op13_int8-mixed-percentile.onnx: FAILED open or read
+shasum: models/best-p34_640x192_op13_fp32.onnx: No such file or directory
+models/best-p34_640x192_op13_fp32.onnx: FAILED open or read
+shasum: models/best-p34_640x192_op13_int8.onnx: No such file or directory
+models/best-p34_640x192_op13_int8.onnx: FAILED open or read
+shasum: models/best-p34_640x192_op13_int8-conv.onnx: No such file or directory
+models/best-p34_640x192_op13_int8-conv.onnx: FAILED open or read
+shasum: models/best-p34_640x192_op13_int8-mixed.onnx: No such file or directory
+models/best-p34_640x192_op13_int8-mixed.onnx: FAILED open or read
+shasum: models/best-p34_640x192_op13_int8-mixed-percentile.onnx: No such file or directory
+models/best-p34_640x192_op13_int8-mixed-percentile.onnx: FAILED open or read
+shasum: WARNING: 22 listed files could not be read
+date: 2026-10-27 17:29:23 KST
+cpu: Apple M1 Pro
+cores: P=6 E=2 logical=8
+memory_GB: 16
+macos: 27.0.1 (26A434)
+python: 3.12.15
+onnxruntime: 1.29.0
+numpy: 2.5.4
+power: Now drawing from 'AC Power'
+lowpowermode: 0
+models/r2/base_D_640x192_op13_int8-mixed-percentile.onnx: OK
+models/r2/base_D_640x192_op13_P1_box.onnx: OK
+[OK] 트랙 P 모델 2개 해시 일치
+[bench_suite] 모델 2개 x 스레드 [4] x 15라운드 = 측정 30회 (순서 무작위, seed=0)
+[예열] base_D_640x192_op13_int8-mixed-percentile t=4 로 120초 동안 계속 돌린다 (결과는 버림)
+[예열] 끝 — 55회, 122초
+  [  1/30] R1 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   5.97 p99=   6.20 rss=  96.3MB  (남은 약 1분)
+  [  2/30] R1 base_D_640x192_op13_P1_box                       t=4  p50=   6.42 p99=   6.58 rss=  95.3MB  (남은 약 1분)
+  [  3/30] R2 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.09 p99=   6.36 rss=  94.5MB  (남은 약 1분)
+  [  4/30] R2 base_D_640x192_op13_P1_box                       t=4  p50=   6.38 p99=   6.59 rss=  95.4MB  (남은 약 1분)
+  [  5/30] R3 base_D_640x192_op13_P1_box                       t=4  p50=   6.33 p99=   6.48 rss=  95.4MB  (남은 약 1분)
+  [  6/30] R3 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.10 p99=   6.32 rss=  94.3MB  (남은 약 1분)
+  [  7/30] R4 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.06 p99=   6.27 rss=  94.7MB  (남은 약 1분)
+  [  8/30] R4 base_D_640x192_op13_P1_box                       t=4  p50=   6.38 p99=   6.59 rss=  95.5MB  (남은 약 1분)
+  [  9/30] R5 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   5.98 p99=   6.34 rss=  94.8MB  (남은 약 1분)
+  [ 10/30] R5 base_D_640x192_op13_P1_box                       t=4  p50=   6.42 p99=   6.54 rss=  95.4MB  (남은 약 1분)
+  [ 11/30] R6 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   5.97 p99=   6.16 rss=  94.8MB  (남은 약 1분)
+  [ 12/30] R6 base_D_640x192_op13_P1_box                       t=4  p50=   6.40 p99=   6.58 rss=  95.4MB  (남은 약 1분)
+  [ 13/30] R7 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.06 p99=   6.39 rss=  94.7MB  (남은 약 1분)
+  [ 14/30] R7 base_D_640x192_op13_P1_box                       t=4  p50=   6.33 p99=   6.61 rss=  95.5MB  (남은 약 1분)
+  [ 15/30] R8 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.06 p99=   6.30 rss=  94.4MB  (남은 약 1분)
+  [ 16/30] R8 base_D_640x192_op13_P1_box                       t=4  p50=   6.33 p99=   6.55 rss=  95.2MB  (남은 약 1분)
+  [ 17/30] R9 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.03 p99=   6.17 rss=  94.5MB  (남은 약 0분)
+  [ 18/30] R9 base_D_640x192_op13_P1_box                       t=4  p50=   6.32 p99=   6.55 rss=  95.4MB  (남은 약 0분)
+  [ 19/30] R10 base_D_640x192_op13_P1_box                       t=4  p50=   6.41 p99=   6.55 rss=  95.3MB  (남은 약 0분)
+  [ 20/30] R10 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.03 p99=   6.19 rss=  94.5MB  (남은 약 0분)
+  [ 21/30] R11 base_D_640x192_op13_P1_box                       t=4  p50=   6.37 p99=   6.48 rss=  95.4MB  (남은 약 0분)
+  [ 22/30] R11 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.04 p99=   6.23 rss=  94.5MB  (남은 약 0분)
+  [ 23/30] R12 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   5.98 p99=   6.27 rss=  94.7MB  (남은 약 0분)
+  [ 24/30] R12 base_D_640x192_op13_P1_box                       t=4  p50=   6.38 p99=   6.55 rss=  95.3MB  (남은 약 0분)
+  [ 25/30] R13 base_D_640x192_op13_P1_box                       t=4  p50=   6.33 p99=   6.53 rss=  95.6MB  (남은 약 0분)
+  [ 26/30] R13 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.02 p99=   6.31 rss=  94.5MB  (남은 약 0분)
+  [ 27/30] R14 base_D_640x192_op13_P1_box                       t=4  p50=   6.40 p99=   6.60 rss=  95.5MB  (남은 약 0분)
+  [ 28/30] R14 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.03 p99=   6.26 rss=  94.3MB  (남은 약 0분)
+  [ 29/30] R15 base_D_640x192_op13_int8-mixed-percentile        t=4  p50=   6.09 p99=   6.23 rss=  94.5MB  (남은 약 0분)
+  [ 30/30] R15 base_D_640x192_op13_P1_box                       t=4  p50=   6.36 p99=   6.52 rss=  95.4MB  (남은 약 0분)
+
+[집계] 라운드 중앙값 (흔들림 = (최대-최소)/중앙값, 10% 넘으면 '!')
+  model                                                           t=4
+  base_D_640x192_op13_int8-mixed-percentile             6.03 ( 2.2%) 
+  base_D_640x192_op13_P1_box                            6.38 ( 1.6%) 
+
+  기록: results/bench_r2P_m1pro.jsonl (집계), results/bench_r2P_m1pro_rounds.jsonl (라운드별 원본). 총 1.1분
+| 모델 (4스레드) | p50 중앙값 ms | 최소 | 최대 | 흔들림 | p99 중앙값 ms | 라운드 |
+|---|---|---|---|---|---|---|
+| base_D_640x192_P1_box | 6.38 | 6.32 | 6.42 | 1.6% | 6.55 | 15 |
+| base_D_640x192_int8-mixed-percentile | 6.03 | 5.97 | 6.10 | 2.2% | 6.27 | 15 |
+
+| 비교 | 속도 비 | 95% 구간 | 뒤 모델이 빠른 라운드 | 판정 |
+|---|---|---|---|---|
+
+- 속도 비 = 앞 모델 p50 / 뒤 모델 p50. 1 보다 크면 뒤 모델(INT8 또는 P5 제거)이 빠르다.
+- 95% 구간: 같은 라운드끼리 묶어 라운드를 20000번 다시 뽑은 부트스트랩 (seed 0). 구간에 1.00 이 들어가면 '구분 안 됨'.
+- 기록: results/bench_r2P_m1pro.jsonl
+
+-> results/bench_r2P_m1pro.md
+[끝] 결과: /Users/tranogang/Documents/mokerton-push/results
+tranogang@tranogangui-noteubug mokerton-push % 
