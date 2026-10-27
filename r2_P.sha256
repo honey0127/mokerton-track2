@@ -1,0 +1,2 @@
+1f4b7e7e6a8f565a884cfa56fa6fadbdab069b6a6a8a39758648825ff74dc581 *models/r2/base_D_640x192_op13_int8-mixed-percentile.onnx
+6bcb20116486bc5b17002462ca1cd9c43c80d7f7365e528299f7f9fdc28a5e3e *models/r2/base_D_640x192_op13_P1_box.onnx

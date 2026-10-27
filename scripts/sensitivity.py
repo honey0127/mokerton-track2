@@ -44,8 +44,9 @@ def session(model):
     so = ort.SessionOptions()
     so.graph_optimization_level = ort.GraphOptimizationLevel.ORT_DISABLE_ALL   # 텐서 이름 보존
     with tempfile.NamedTemporaryFile(suffix=".onnx", delete=False) as f:
-        onnx.save(model, f.name)
-        return ort.InferenceSession(f.name, so, providers=["CPUExecutionProvider"])
+        path = f.name
+    onnx.save(model, path)   # Windows: 열린 채로는 ORT 가 못 읽음 (errno 13)
+    return ort.InferenceSession(path, so, providers=["CPUExecutionProvider"])
 
 
 def module_of(node_name):

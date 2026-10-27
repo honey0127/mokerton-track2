@@ -5,6 +5,7 @@
 #   bash run_m1.sh quick   # 약 5분: B·D 의 FP32 대비 INT8 속도 비만 빠르게 본다
 #   bash run_m1.sh key     # 약 15~25분: 주력 관련 8개, 4스레드, 15라운드 -> 보고서 표의 원본  ★ 이것이 본 측정
 #   bash run_m1.sh all     # 약 30~50분: 22개 전부, 4스레드 + P코어 수, 5라운드 (부록용, 선택)
+#   bash run_m1.sh p     # 약 10분: 2차 트랙 P, D 기준 INT8 vs P1 박스 FP32 (models/r2/ 에 두 파일 필요)
 #
 # 측정 조건: 전원 어댑터 연결 / 저전력 모드 끔 / 다른 앱 종료 / 덮개 열고 그대로 둔다.
 # 결과는 results/ 에 쌓인다 (저장소에서는 OUT=benchmarks/m1pro 로 준다). 끝나면 results 폴더를 통째로 돌려주면 된다.
@@ -96,11 +97,20 @@ case "$MODE" in
       --jsonl "$OUT/bench_key15_m1pro.jsonl" --raw "$OUT/bench_key15_m1pro_rounds.jsonl"
     python scripts/bench_compare.py --jsonl "$OUT/bench_key15_m1pro.jsonl" --threads 4 --out "$OUT/bench_key15_m1pro.md"
     ;;
+  p)
+    # 2차 트랙 P: D 기준 INT8 vs P1 박스 경로 FP32 (r2/S_quant_P_holdout.md). key 와 같은 조건.
+    shasum -a 256 -c r2_P.sha256 && echo "[OK] 트랙 P 모델 2개 해시 일치"
+    caffeinate -dims python scripts/bench_suite.py \
+      models/r2/base_D_640x192_op13_int8-mixed-percentile.onnx models/r2/base_D_640x192_op13_P1_box.onnx \
+      --threads 4 --rounds 15 --soak 120 --tag r2P-m1pro \
+      --jsonl "$OUT/bench_r2P_m1pro.jsonl" --raw "$OUT/bench_r2P_m1pro_rounds.jsonl"
+    python scripts/bench_compare.py --jsonl "$OUT/bench_r2P_m1pro.jsonl" --threads 4 --out "$OUT/bench_r2P_m1pro.md"
+    ;;
   all)
     caffeinate -dims python scripts/bench_suite.py models/*.onnx \
       --threads 4,"$PCORE" --rounds 5 --soak 120 --tag all-m1pro \
       --jsonl "$OUT/bench_all_m1pro.jsonl" --raw "$OUT/bench_all_m1pro_rounds.jsonl"
     ;;
-  *) echo "모드: check | quick | key | all"; exit 1 ;;
+  *) echo "모드: check | quick | key | all | p"; exit 1 ;;
 esac
 echo "[끝] 결과: $(pwd)/$OUT"

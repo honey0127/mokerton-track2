@@ -1,0 +1,2279 @@
+{
+  "fp32": "r2/pc5070/models/base_B_1280x384_op13_fp32.onnx",
+  "qdq": "r2/pc5070/models/base_B_1280x384_op13_int8-mixed-percentile.onnx",
+  "n_images": 16,
+  "output": {
+    "box_rows_sqnr_db": 33.47,
+    "cls_rows_sqnr_db": 16.19
+  },
+  "modules": [
+    {
+      "module": "/model.10/m/m.0/attn/",
+      "worst_local_db": 20.36,
+      "accum_db": 11.19,
+      "n_tensors": 13
+    },
+    {
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/",
+      "worst_local_db": 25.03,
+      "accum_db": 12.05,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/",
+      "worst_local_db": 25.97,
+      "accum_db": 12.25,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.1/",
+      "worst_local_db": 29.25,
+      "accum_db": 21.58,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/",
+      "worst_local_db": 29.83,
+      "accum_db": 13.02,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.2/cv1/",
+      "worst_local_db": 29.92,
+      "accum_db": 19.85,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv2.0/cv2.0.1/",
+      "worst_local_db": 30.21,
+      "accum_db": 13.84,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/",
+      "worst_local_db": 30.87,
+      "accum_db": 15.96,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/",
+      "worst_local_db": 31.2,
+      "accum_db": 12.31,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.2/cv2/",
+      "worst_local_db": 31.46,
+      "accum_db": 16.23,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv2.1/cv2.1.1/",
+      "worst_local_db": 31.57,
+      "accum_db": 13.88,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.6/m.0/cv3/",
+      "worst_local_db": 31.84,
+      "accum_db": 16.43,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/ffn/ffn.1/",
+      "worst_local_db": 31.93,
+      "accum_db": 13.86,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.10/",
+      "worst_local_db": 32.6,
+      "accum_db": 15.11,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/attn/qkv/",
+      "worst_local_db": 32.65,
+      "accum_db": 16.73,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/",
+      "worst_local_db": 32.66,
+      "accum_db": 13.59,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.6/",
+      "worst_local_db": 33.15,
+      "accum_db": 16.1,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.0/",
+      "worst_local_db": 33.21,
+      "accum_db": 27.8,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/cv2/",
+      "worst_local_db": 33.31,
+      "accum_db": 14.67,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.4/cv1/",
+      "worst_local_db": 33.54,
+      "accum_db": 18.8,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.2/m.0/cv2/",
+      "worst_local_db": 33.58,
+      "accum_db": 16.55,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv2.1/cv2.1.0/",
+      "worst_local_db": 33.7,
+      "accum_db": 12.55,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.19/",
+      "worst_local_db": 33.72,
+      "accum_db": 13.57,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.19/cv1/",
+      "worst_local_db": 33.75,
+      "accum_db": 14.87,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.19/m.0/cv2/",
+      "worst_local_db": 33.88,
+      "accum_db": 13.02,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/m/m.1/cv1/",
+      "worst_local_db": 34.04,
+      "accum_db": 17.05,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/attn/pe/",
+      "worst_local_db": 34.17,
+      "accum_db": 15.47,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.6/cv1/",
+      "worst_local_db": 34.24,
+      "accum_db": 16.2,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/ffn/ffn.0/",
+      "worst_local_db": 34.44,
+      "accum_db": 14.68,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.18/",
+      "worst_local_db": 34.49,
+      "accum_db": 14.08,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.8/",
+      "worst_local_db": 34.5,
+      "accum_db": 15.38,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/cv2/",
+      "worst_local_db": 34.5,
+      "accum_db": 13.81,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/m/m.0/cv2/",
+      "worst_local_db": 34.52,
+      "accum_db": 18.98,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/cv1/",
+      "worst_local_db": 34.56,
+      "accum_db": 18.01,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.19/cv2/",
+      "worst_local_db": 34.69,
+      "accum_db": 14.23,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/m/m.0/cv1/",
+      "worst_local_db": 34.74,
+      "accum_db": 16.84,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/m/m.0/cv1/",
+      "worst_local_db": 34.77,
+      "accum_db": 16.58,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/m/m.0/",
+      "worst_local_db": 34.9,
+      "accum_db": 19.92,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.13/m.0/cv2/",
+      "worst_local_db": 34.95,
+      "accum_db": 16.4,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/",
+      "worst_local_db": 34.99,
+      "accum_db": 13.09,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.6/m.0/cv1/",
+      "worst_local_db": 35.09,
+      "accum_db": 19.0,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.17/",
+      "worst_local_db": 35.12,
+      "accum_db": 13.36,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/",
+      "worst_local_db": 35.17,
+      "accum_db": 15.13,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.19/m.0/",
+      "worst_local_db": 35.2,
+      "accum_db": 13.0,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.13/cv2/",
+      "worst_local_db": 35.25,
+      "accum_db": 14.92,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/m.0/cv2/",
+      "worst_local_db": 35.31,
+      "accum_db": 16.08,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv2.0/cv2.0.0/",
+      "worst_local_db": 35.34,
+      "accum_db": 14.12,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.8/m.0/m/m.0/cv2/",
+      "worst_local_db": 35.37,
+      "accum_db": 19.0,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.3/",
+      "worst_local_db": 35.48,
+      "accum_db": 17.52,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/m/m.1/cv1/",
+      "worst_local_db": 35.56,
+      "accum_db": 19.11,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.4/cv2/",
+      "worst_local_db": 35.57,
+      "accum_db": 15.52,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/cv3/",
+      "worst_local_db": 35.61,
+      "accum_db": 18.13,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.10/m/m.0/attn/proj/",
+      "worst_local_db": 35.69,
+      "accum_db": 13.74,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.19/m.0/cv1/",
+      "worst_local_db": 35.69,
+      "accum_db": 16.1,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.9/cv2/",
+      "worst_local_db": 35.71,
+      "accum_db": 17.33,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/m/m.1/cv2/",
+      "worst_local_db": 35.94,
+      "accum_db": 21.15,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/m/m.1/cv2/",
+      "worst_local_db": 35.94,
+      "accum_db": 20.67,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.15/",
+      "worst_local_db": 35.97,
+      "accum_db": 15.19,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.10/cv1/",
+      "worst_local_db": 36.24,
+      "accum_db": 16.0,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.5/",
+      "worst_local_db": 36.28,
+      "accum_db": 18.33,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/cv2/",
+      "worst_local_db": 36.31,
+      "accum_db": 17.43,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/cv1/",
+      "worst_local_db": 36.4,
+      "accum_db": 15.92,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/cv2/",
+      "worst_local_db": 36.42,
+      "accum_db": 15.88,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.7/",
+      "worst_local_db": 36.75,
+      "accum_db": 16.32,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.13/m.0/cv1/",
+      "worst_local_db": 36.81,
+      "accum_db": 16.57,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.8/m.0/m/m.0/",
+      "worst_local_db": 36.9,
+      "accum_db": 19.01,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.13/cv1/",
+      "worst_local_db": 37.14,
+      "accum_db": 16.39,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.6/m.0/cv2/",
+      "worst_local_db": 37.18,
+      "accum_db": 14.46,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/cv1/",
+      "worst_local_db": 37.22,
+      "accum_db": 19.13,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/",
+      "worst_local_db": 37.3,
+      "accum_db": 21.56,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.8/m.0/",
+      "worst_local_db": 37.38,
+      "accum_db": 19.94,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.8/cv2/",
+      "worst_local_db": 37.41,
+      "accum_db": 17.49,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.13/",
+      "worst_local_db": 37.64,
+      "accum_db": 15.89,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.4/m.0/cv1/",
+      "worst_local_db": 37.79,
+      "accum_db": 18.96,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv2.0/cv2.0.2/",
+      "worst_local_db": 38.39,
+      "accum_db": 17.02,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.12/",
+      "worst_local_db": 38.9,
+      "accum_db": 15.22,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.2/m.0/cv1/",
+      "worst_local_db": 39.02,
+      "accum_db": 23.77,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/",
+      "worst_local_db": 39.02,
+      "accum_db": 18.66,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/m.0/cv1/",
+      "worst_local_db": 39.25,
+      "accum_db": 17.03,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.13/m.0/",
+      "worst_local_db": 39.63,
+      "accum_db": 17.15,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.6/m.0/",
+      "worst_local_db": 39.67,
+      "accum_db": 21.06,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.8/m.0/m/m.1/",
+      "worst_local_db": 39.75,
+      "accum_db": 20.99,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.4/m.0/cv2/",
+      "worst_local_db": 39.89,
+      "accum_db": 20.0,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.16/m.0/",
+      "worst_local_db": 40.25,
+      "accum_db": 17.78,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.2/m.0/",
+      "worst_local_db": 41.1,
+      "accum_db": 18.92,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.6/m.0/m/m.1/",
+      "worst_local_db": 41.19,
+      "accum_db": 22.24,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.20/cv2.1/cv2.1.2/",
+      "worst_local_db": 41.27,
+      "accum_db": 17.56,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.20/cv3.1/cv3.1.2/",
+      "worst_local_db": 41.68,
+      "accum_db": 21.19,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.4/",
+      "worst_local_db": 42.26,
+      "accum_db": 18.52,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.9/cv1/",
+      "worst_local_db": 43.63,
+      "accum_db": 24.45,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.4/m.0/",
+      "worst_local_db": 45.21,
+      "accum_db": 21.47,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.20/dfl/",
+      "worst_local_db": 45.48,
+      "accum_db": 10.48,
+      "n_tensors": 2
+    },
+    {
+      "module": "/model.9/",
+      "worst_local_db": 46.83,
+      "accum_db": 28.36,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.2/",
+      "worst_local_db": 49.06,
+      "accum_db": 19.18,
+      "n_tensors": 3
+    },
+    {
+      "module": "/model.20/cv3.0/cv3.0.2/",
+      "worst_local_db": 49.51,
+      "accum_db": 25.08,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.11/",
+      "worst_local_db": 180.35,
+      "accum_db": 14.62,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.14/",
+      "worst_local_db": 183.5,
+      "accum_db": 14.89,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.9/m/",
+      "worst_local_db": 189.55,
+      "accum_db": 28.25,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.9/m_1/",
+      "worst_local_db": 190.79,
+      "accum_db": 29.27,
+      "n_tensors": 1
+    },
+    {
+      "module": "/model.9/m_2/",
+      "worst_local_db": 191.52,
+      "accum_db": 29.77,
+      "n_tensors": 1
+    }
+  ],
+  "tensors": [
+    {
+      "tensor": "/model.0/conv/Conv_output_0",
+      "producer": "/model.0/conv/Conv",
+      "module": "/model.0/",
+      "local_sqnr_db": 33.21,
+      "accum_sqnr_db": 33.13
+    },
+    {
+      "tensor": "/model.0/act/Sigmoid_output_0",
+      "producer": "/model.0/act/Sigmoid",
+      "module": "/model.0/",
+      "local_sqnr_db": 56.06,
+      "accum_sqnr_db": 28.38
+    },
+    {
+      "tensor": "/model.0/act/Mul_output_0",
+      "producer": "/model.0/act/Mul",
+      "module": "/model.0/",
+      "local_sqnr_db": 38.43,
+      "accum_sqnr_db": 27.8
+    },
+    {
+      "tensor": "/model.1/conv/Conv_output_0",
+      "producer": "/model.1/conv/Conv",
+      "module": "/model.1/",
+      "local_sqnr_db": 29.25,
+      "accum_sqnr_db": 25.22
+    },
+    {
+      "tensor": "/model.1/act/Sigmoid_output_0",
+      "producer": "/model.1/act/Sigmoid",
+      "module": "/model.1/",
+      "local_sqnr_db": 55.43,
+      "accum_sqnr_db": 21.58
+    },
+    {
+      "tensor": "/model.1/act/Mul_output_0",
+      "producer": "/model.1/act/Mul",
+      "module": "/model.1/",
+      "local_sqnr_db": 33.88,
+      "accum_sqnr_db": 23.79
+    },
+    {
+      "tensor": "/model.2/cv1/conv/Conv_output_0",
+      "producer": "/model.2/cv1/conv/Conv",
+      "module": "/model.2/cv1/",
+      "local_sqnr_db": 29.92,
+      "accum_sqnr_db": 22.29
+    },
+    {
+      "tensor": "/model.2/cv1/act/Sigmoid_output_0",
+      "producer": "/model.2/cv1/act/Sigmoid",
+      "module": "/model.2/cv1/",
+      "local_sqnr_db": 55.55,
+      "accum_sqnr_db": 19.85
+    },
+    {
+      "tensor": "/model.2/cv1/act/Mul_output_0",
+      "producer": "/model.2/cv1/act/Mul",
+      "module": "/model.2/cv1/",
+      "local_sqnr_db": 36.07,
+      "accum_sqnr_db": 19.85
+    },
+    {
+      "tensor": "/model.2/Split_output_0",
+      "producer": "/model.2/Split",
+      "module": "/model.2/",
+      "local_sqnr_db": 201.36,
+      "accum_sqnr_db": 20.27
+    },
+    {
+      "tensor": "/model.2/Split_output_1",
+      "producer": "/model.2/Split",
+      "module": "/model.2/",
+      "local_sqnr_db": 199.41,
+      "accum_sqnr_db": 19.18
+    },
+    {
+      "tensor": "/model.2/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.2/m.0/cv1/conv/Conv",
+      "module": "/model.2/m.0/cv1/",
+      "local_sqnr_db": 39.02,
+      "accum_sqnr_db": 25.96
+    },
+    {
+      "tensor": "/model.2/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.2/m.0/cv1/act/Sigmoid",
+      "module": "/model.2/m.0/cv1/",
+      "local_sqnr_db": 53.99,
+      "accum_sqnr_db": 31.87
+    },
+    {
+      "tensor": "/model.2/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.2/m.0/cv1/act/Mul",
+      "module": "/model.2/m.0/cv1/",
+      "local_sqnr_db": 43.32,
+      "accum_sqnr_db": 23.77
+    },
+    {
+      "tensor": "/model.2/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.2/m.0/cv2/conv/Conv",
+      "module": "/model.2/m.0/cv2/",
+      "local_sqnr_db": 33.58,
+      "accum_sqnr_db": 17.28
+    },
+    {
+      "tensor": "/model.2/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.2/m.0/cv2/act/Sigmoid",
+      "module": "/model.2/m.0/cv2/",
+      "local_sqnr_db": 54.87,
+      "accum_sqnr_db": 16.55
+    },
+    {
+      "tensor": "/model.2/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.2/m.0/cv2/act/Mul",
+      "module": "/model.2/m.0/cv2/",
+      "local_sqnr_db": 38.35,
+      "accum_sqnr_db": 17.17
+    },
+    {
+      "tensor": "/model.2/m.0/Add_output_0",
+      "producer": "/model.2/m.0/Add",
+      "module": "/model.2/m.0/",
+      "local_sqnr_db": 41.1,
+      "accum_sqnr_db": 18.92
+    },
+    {
+      "tensor": "/model.2/Concat_output_0",
+      "producer": "/model.2/Concat",
+      "module": "/model.2/",
+      "local_sqnr_db": 49.06,
+      "accum_sqnr_db": 19.25
+    },
+    {
+      "tensor": "/model.2/cv2/conv/Conv_output_0",
+      "producer": "/model.2/cv2/conv/Conv",
+      "module": "/model.2/cv2/",
+      "local_sqnr_db": 31.46,
+      "accum_sqnr_db": 19.07
+    },
+    {
+      "tensor": "/model.2/cv2/act/Sigmoid_output_0",
+      "producer": "/model.2/cv2/act/Sigmoid",
+      "module": "/model.2/cv2/",
+      "local_sqnr_db": 53.57,
+      "accum_sqnr_db": 18.03
+    },
+    {
+      "tensor": "/model.2/cv2/act/Mul_output_0",
+      "producer": "/model.2/cv2/act/Mul",
+      "module": "/model.2/cv2/",
+      "local_sqnr_db": 37.34,
+      "accum_sqnr_db": 16.23
+    },
+    {
+      "tensor": "/model.3/conv/Conv_output_0",
+      "producer": "/model.3/conv/Conv",
+      "module": "/model.3/",
+      "local_sqnr_db": 35.48,
+      "accum_sqnr_db": 17.52
+    },
+    {
+      "tensor": "/model.3/act/Sigmoid_output_0",
+      "producer": "/model.3/act/Sigmoid",
+      "module": "/model.3/",
+      "local_sqnr_db": 55.22,
+      "accum_sqnr_db": 22.35
+    },
+    {
+      "tensor": "/model.3/act/Mul_output_0",
+      "producer": "/model.3/act/Mul",
+      "module": "/model.3/",
+      "local_sqnr_db": 39.6,
+      "accum_sqnr_db": 19.2
+    },
+    {
+      "tensor": "/model.4/cv1/conv/Conv_output_0",
+      "producer": "/model.4/cv1/conv/Conv",
+      "module": "/model.4/cv1/",
+      "local_sqnr_db": 33.54,
+      "accum_sqnr_db": 19.16
+    },
+    {
+      "tensor": "/model.4/cv1/act/Sigmoid_output_0",
+      "producer": "/model.4/cv1/act/Sigmoid",
+      "module": "/model.4/cv1/",
+      "local_sqnr_db": 54.73,
+      "accum_sqnr_db": 26.45
+    },
+    {
+      "tensor": "/model.4/cv1/act/Mul_output_0",
+      "producer": "/model.4/cv1/act/Mul",
+      "module": "/model.4/cv1/",
+      "local_sqnr_db": 41.56,
+      "accum_sqnr_db": 18.8
+    },
+    {
+      "tensor": "/model.4/Split_output_0",
+      "producer": "/model.4/Split",
+      "module": "/model.4/",
+      "local_sqnr_db": 186.61,
+      "accum_sqnr_db": 18.52
+    },
+    {
+      "tensor": "/model.4/Split_output_1",
+      "producer": "/model.4/Split",
+      "module": "/model.4/",
+      "local_sqnr_db": 183.76,
+      "accum_sqnr_db": 19.34
+    },
+    {
+      "tensor": "/model.4/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.4/m.0/cv1/conv/Conv",
+      "module": "/model.4/m.0/cv1/",
+      "local_sqnr_db": 37.79,
+      "accum_sqnr_db": 18.96
+    },
+    {
+      "tensor": "/model.4/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.4/m.0/cv1/act/Sigmoid",
+      "module": "/model.4/m.0/cv1/",
+      "local_sqnr_db": 55.46,
+      "accum_sqnr_db": 27.22
+    },
+    {
+      "tensor": "/model.4/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.4/m.0/cv1/act/Mul",
+      "module": "/model.4/m.0/cv1/",
+      "local_sqnr_db": 41.84,
+      "accum_sqnr_db": 19.31
+    },
+    {
+      "tensor": "/model.4/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.4/m.0/cv2/conv/Conv",
+      "module": "/model.4/m.0/cv2/",
+      "local_sqnr_db": 39.89,
+      "accum_sqnr_db": 20.0
+    },
+    {
+      "tensor": "/model.4/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.4/m.0/cv2/act/Sigmoid",
+      "module": "/model.4/m.0/cv2/",
+      "local_sqnr_db": 55.57,
+      "accum_sqnr_db": 26.95
+    },
+    {
+      "tensor": "/model.4/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.4/m.0/cv2/act/Mul",
+      "module": "/model.4/m.0/cv2/",
+      "local_sqnr_db": 45.23,
+      "accum_sqnr_db": 20.41
+    },
+    {
+      "tensor": "/model.4/m.0/Add_output_0",
+      "producer": "/model.4/m.0/Add",
+      "module": "/model.4/m.0/",
+      "local_sqnr_db": 45.21,
+      "accum_sqnr_db": 21.47
+    },
+    {
+      "tensor": "/model.4/Concat_output_0",
+      "producer": "/model.4/Concat",
+      "module": "/model.4/",
+      "local_sqnr_db": 42.26,
+      "accum_sqnr_db": 20.48
+    },
+    {
+      "tensor": "/model.4/cv2/conv/Conv_output_0",
+      "producer": "/model.4/cv2/conv/Conv",
+      "module": "/model.4/cv2/",
+      "local_sqnr_db": 37.42,
+      "accum_sqnr_db": 18.59
+    },
+    {
+      "tensor": "/model.4/cv2/act/Sigmoid_output_0",
+      "producer": "/model.4/cv2/act/Sigmoid",
+      "module": "/model.4/cv2/",
+      "local_sqnr_db": 50.44,
+      "accum_sqnr_db": 21.36
+    },
+    {
+      "tensor": "/model.4/cv2/act/Mul_output_0",
+      "producer": "/model.4/cv2/act/Mul",
+      "module": "/model.4/cv2/",
+      "local_sqnr_db": 35.57,
+      "accum_sqnr_db": 15.52
+    },
+    {
+      "tensor": "/model.5/conv/Conv_output_0",
+      "producer": "/model.5/conv/Conv",
+      "module": "/model.5/",
+      "local_sqnr_db": 36.28,
+      "accum_sqnr_db": 18.56
+    },
+    {
+      "tensor": "/model.5/act/Sigmoid_output_0",
+      "producer": "/model.5/act/Sigmoid",
+      "module": "/model.5/",
+      "local_sqnr_db": 52.79,
+      "accum_sqnr_db": 24.32
+    },
+    {
+      "tensor": "/model.5/act/Mul_output_0",
+      "producer": "/model.5/act/Mul",
+      "module": "/model.5/",
+      "local_sqnr_db": 38.92,
+      "accum_sqnr_db": 18.33
+    },
+    {
+      "tensor": "/model.6/cv1/conv/Conv_output_0",
+      "producer": "/model.6/cv1/conv/Conv",
+      "module": "/model.6/cv1/",
+      "local_sqnr_db": 34.24,
+      "accum_sqnr_db": 17.9
+    },
+    {
+      "tensor": "/model.6/cv1/act/Sigmoid_output_0",
+      "producer": "/model.6/cv1/act/Sigmoid",
+      "module": "/model.6/cv1/",
+      "local_sqnr_db": 53.57,
+      "accum_sqnr_db": 22.83
+    },
+    {
+      "tensor": "/model.6/cv1/act/Mul_output_0",
+      "producer": "/model.6/cv1/act/Mul",
+      "module": "/model.6/cv1/",
+      "local_sqnr_db": 38.26,
+      "accum_sqnr_db": 16.2
+    },
+    {
+      "tensor": "/model.6/Split_output_0",
+      "producer": "/model.6/Split",
+      "module": "/model.6/",
+      "local_sqnr_db": 181.66,
+      "accum_sqnr_db": 16.1
+    },
+    {
+      "tensor": "/model.6/Split_output_1",
+      "producer": "/model.6/Split",
+      "module": "/model.6/",
+      "local_sqnr_db": 179.47,
+      "accum_sqnr_db": 16.33
+    },
+    {
+      "tensor": "/model.6/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.6/m.0/cv1/conv/Conv",
+      "module": "/model.6/m.0/cv1/",
+      "local_sqnr_db": 35.09,
+      "accum_sqnr_db": 19.0
+    },
+    {
+      "tensor": "/model.6/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.6/m.0/cv2/conv/Conv",
+      "module": "/model.6/m.0/cv2/",
+      "local_sqnr_db": 37.98,
+      "accum_sqnr_db": 17.54
+    },
+    {
+      "tensor": "/model.6/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/cv1/act/Sigmoid",
+      "module": "/model.6/m.0/cv1/",
+      "local_sqnr_db": 54.92,
+      "accum_sqnr_db": 28.38
+    },
+    {
+      "tensor": "/model.6/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/cv2/act/Sigmoid",
+      "module": "/model.6/m.0/cv2/",
+      "local_sqnr_db": 51.93,
+      "accum_sqnr_db": 20.15
+    },
+    {
+      "tensor": "/model.6/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.6/m.0/cv1/act/Mul",
+      "module": "/model.6/m.0/cv1/",
+      "local_sqnr_db": 39.15,
+      "accum_sqnr_db": 19.02
+    },
+    {
+      "tensor": "/model.6/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.6/m.0/cv2/act/Mul",
+      "module": "/model.6/m.0/cv2/",
+      "local_sqnr_db": 37.18,
+      "accum_sqnr_db": 14.46
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv1/conv/Conv",
+      "module": "/model.6/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 37.71,
+      "accum_sqnr_db": 18.48
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv1/act/Sigmoid",
+      "module": "/model.6/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 52.62,
+      "accum_sqnr_db": 22.44
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv1/act/Mul",
+      "module": "/model.6/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 34.77,
+      "accum_sqnr_db": 16.58
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv2/conv/Conv",
+      "module": "/model.6/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 34.52,
+      "accum_sqnr_db": 19.34
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv2/act/Sigmoid",
+      "module": "/model.6/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 54.36,
+      "accum_sqnr_db": 26.41
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.6/m.0/m/m.0/cv2/act/Mul",
+      "module": "/model.6/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 35.69,
+      "accum_sqnr_db": 18.98
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.0/Add_output_0",
+      "producer": "/model.6/m.0/m/m.0/Add",
+      "module": "/model.6/m.0/m/m.0/",
+      "local_sqnr_db": 34.9,
+      "accum_sqnr_db": 19.92
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv1/conv/Conv_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv1/conv/Conv",
+      "module": "/model.6/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 36.77,
+      "accum_sqnr_db": 19.39
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv1/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv1/act/Sigmoid",
+      "module": "/model.6/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 52.0,
+      "accum_sqnr_db": 24.32
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv1/act/Mul_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv1/act/Mul",
+      "module": "/model.6/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 34.04,
+      "accum_sqnr_db": 17.05
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv2/conv/Conv_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv2/conv/Conv",
+      "module": "/model.6/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 35.94,
+      "accum_sqnr_db": 21.15
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv2/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv2/act/Sigmoid",
+      "module": "/model.6/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 56.59,
+      "accum_sqnr_db": 28.32
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/cv2/act/Mul_output_0",
+      "producer": "/model.6/m.0/m/m.1/cv2/act/Mul",
+      "module": "/model.6/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 41.83,
+      "accum_sqnr_db": 21.29
+    },
+    {
+      "tensor": "/model.6/m.0/m/m.1/Add_output_0",
+      "producer": "/model.6/m.0/m/m.1/Add",
+      "module": "/model.6/m.0/m/m.1/",
+      "local_sqnr_db": 41.19,
+      "accum_sqnr_db": 22.24
+    },
+    {
+      "tensor": "/model.6/m.0/Concat_output_0",
+      "producer": "/model.6/m.0/Concat",
+      "module": "/model.6/m.0/",
+      "local_sqnr_db": 39.67,
+      "accum_sqnr_db": 21.06
+    },
+    {
+      "tensor": "/model.6/m.0/cv3/conv/Conv_output_0",
+      "producer": "/model.6/m.0/cv3/conv/Conv",
+      "module": "/model.6/m.0/cv3/",
+      "local_sqnr_db": 33.17,
+      "accum_sqnr_db": 18.04
+    },
+    {
+      "tensor": "/model.6/m.0/cv3/act/Sigmoid_output_0",
+      "producer": "/model.6/m.0/cv3/act/Sigmoid",
+      "module": "/model.6/m.0/cv3/",
+      "local_sqnr_db": 51.8,
+      "accum_sqnr_db": 22.8
+    },
+    {
+      "tensor": "/model.6/m.0/cv3/act/Mul_output_0",
+      "producer": "/model.6/m.0/cv3/act/Mul",
+      "module": "/model.6/m.0/cv3/",
+      "local_sqnr_db": 31.84,
+      "accum_sqnr_db": 16.43
+    },
+    {
+      "tensor": "/model.6/Concat_output_0",
+      "producer": "/model.6/Concat",
+      "module": "/model.6/",
+      "local_sqnr_db": 33.15,
+      "accum_sqnr_db": 16.22
+    },
+    {
+      "tensor": "/model.6/cv2/conv/Conv_output_0",
+      "producer": "/model.6/cv2/conv/Conv",
+      "module": "/model.6/cv2/",
+      "local_sqnr_db": 38.27,
+      "accum_sqnr_db": 17.96
+    },
+    {
+      "tensor": "/model.6/cv2/act/Sigmoid_output_0",
+      "producer": "/model.6/cv2/act/Sigmoid",
+      "module": "/model.6/cv2/",
+      "local_sqnr_db": 52.35,
+      "accum_sqnr_db": 22.52
+    },
+    {
+      "tensor": "/model.6/cv2/act/Mul_output_0",
+      "producer": "/model.6/cv2/act/Mul",
+      "module": "/model.6/cv2/",
+      "local_sqnr_db": 36.42,
+      "accum_sqnr_db": 15.88
+    },
+    {
+      "tensor": "/model.7/conv/Conv_output_0",
+      "producer": "/model.7/conv/Conv",
+      "module": "/model.7/",
+      "local_sqnr_db": 37.14,
+      "accum_sqnr_db": 18.94
+    },
+    {
+      "tensor": "/model.7/act/Sigmoid_output_0",
+      "producer": "/model.7/act/Sigmoid",
+      "module": "/model.7/",
+      "local_sqnr_db": 51.75,
+      "accum_sqnr_db": 22.72
+    },
+    {
+      "tensor": "/model.7/act/Mul_output_0",
+      "producer": "/model.7/act/Mul",
+      "module": "/model.7/",
+      "local_sqnr_db": 36.75,
+      "accum_sqnr_db": 16.32
+    },
+    {
+      "tensor": "/model.8/cv1/conv/Conv_output_0",
+      "producer": "/model.8/cv1/conv/Conv",
+      "module": "/model.8/cv1/",
+      "local_sqnr_db": 38.3,
+      "accum_sqnr_db": 18.65
+    },
+    {
+      "tensor": "/model.8/cv1/act/Sigmoid_output_0",
+      "producer": "/model.8/cv1/act/Sigmoid",
+      "module": "/model.8/cv1/",
+      "local_sqnr_db": 52.4,
+      "accum_sqnr_db": 21.02
+    },
+    {
+      "tensor": "/model.8/cv1/act/Mul_output_0",
+      "producer": "/model.8/cv1/act/Mul",
+      "module": "/model.8/cv1/",
+      "local_sqnr_db": 36.4,
+      "accum_sqnr_db": 15.92
+    },
+    {
+      "tensor": "/model.8/Split_output_0",
+      "producer": "/model.8/Split",
+      "module": "/model.8/",
+      "local_sqnr_db": 178.3,
+      "accum_sqnr_db": 16.14
+    },
+    {
+      "tensor": "/model.8/Split_output_1",
+      "producer": "/model.8/Split",
+      "module": "/model.8/",
+      "local_sqnr_db": 174.95,
+      "accum_sqnr_db": 15.38
+    },
+    {
+      "tensor": "/model.8/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.8/m.0/cv1/conv/Conv",
+      "module": "/model.8/m.0/cv1/",
+      "local_sqnr_db": 34.56,
+      "accum_sqnr_db": 19.22
+    },
+    {
+      "tensor": "/model.8/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.8/m.0/cv2/conv/Conv",
+      "module": "/model.8/m.0/cv2/",
+      "local_sqnr_db": 37.24,
+      "accum_sqnr_db": 17.39
+    },
+    {
+      "tensor": "/model.8/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/cv1/act/Sigmoid",
+      "module": "/model.8/m.0/cv1/",
+      "local_sqnr_db": 52.65,
+      "accum_sqnr_db": 25.85
+    },
+    {
+      "tensor": "/model.8/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/cv2/act/Sigmoid",
+      "module": "/model.8/m.0/cv2/",
+      "local_sqnr_db": 51.42,
+      "accum_sqnr_db": 19.63
+    },
+    {
+      "tensor": "/model.8/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.8/m.0/cv1/act/Mul",
+      "module": "/model.8/m.0/cv1/",
+      "local_sqnr_db": 37.59,
+      "accum_sqnr_db": 18.01
+    },
+    {
+      "tensor": "/model.8/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.8/m.0/cv2/act/Mul",
+      "module": "/model.8/m.0/cv2/",
+      "local_sqnr_db": 34.5,
+      "accum_sqnr_db": 13.81
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv1/conv/Conv",
+      "module": "/model.8/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 37.3,
+      "accum_sqnr_db": 19.19
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv1/act/Sigmoid",
+      "module": "/model.8/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 51.17,
+      "accum_sqnr_db": 21.59
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv1/act/Mul",
+      "module": "/model.8/m.0/m/m.0/cv1/",
+      "local_sqnr_db": 34.74,
+      "accum_sqnr_db": 16.84
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv2/conv/Conv",
+      "module": "/model.8/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 35.37,
+      "accum_sqnr_db": 20.05
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv2/act/Sigmoid",
+      "module": "/model.8/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 53.71,
+      "accum_sqnr_db": 25.46
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.8/m.0/m/m.0/cv2/act/Mul",
+      "module": "/model.8/m.0/m/m.0/cv2/",
+      "local_sqnr_db": 36.28,
+      "accum_sqnr_db": 19.0
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.0/Add_output_0",
+      "producer": "/model.8/m.0/m/m.0/Add",
+      "module": "/model.8/m.0/m/m.0/",
+      "local_sqnr_db": 36.9,
+      "accum_sqnr_db": 19.01
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv1/conv/Conv_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv1/conv/Conv",
+      "module": "/model.8/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 35.56,
+      "accum_sqnr_db": 20.37
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv1/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv1/act/Sigmoid",
+      "module": "/model.8/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 54.04,
+      "accum_sqnr_db": 24.43
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv1/act/Mul_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv1/act/Mul",
+      "module": "/model.8/m.0/m/m.1/cv1/",
+      "local_sqnr_db": 37.22,
+      "accum_sqnr_db": 19.11
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv2/conv/Conv_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv2/conv/Conv",
+      "module": "/model.8/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 35.94,
+      "accum_sqnr_db": 21.16
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv2/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv2/act/Sigmoid",
+      "module": "/model.8/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 55.47,
+      "accum_sqnr_db": 25.83
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/cv2/act/Mul_output_0",
+      "producer": "/model.8/m.0/m/m.1/cv2/act/Mul",
+      "module": "/model.8/m.0/m/m.1/cv2/",
+      "local_sqnr_db": 40.55,
+      "accum_sqnr_db": 20.67
+    },
+    {
+      "tensor": "/model.8/m.0/m/m.1/Add_output_0",
+      "producer": "/model.8/m.0/m/m.1/Add",
+      "module": "/model.8/m.0/m/m.1/",
+      "local_sqnr_db": 39.75,
+      "accum_sqnr_db": 20.99
+    },
+    {
+      "tensor": "/model.8/m.0/Concat_output_0",
+      "producer": "/model.8/m.0/Concat",
+      "module": "/model.8/m.0/",
+      "local_sqnr_db": 37.38,
+      "accum_sqnr_db": 19.94
+    },
+    {
+      "tensor": "/model.8/m.0/cv3/conv/Conv_output_0",
+      "producer": "/model.8/m.0/cv3/conv/Conv",
+      "module": "/model.8/m.0/cv3/",
+      "local_sqnr_db": 36.36,
+      "accum_sqnr_db": 19.95
+    },
+    {
+      "tensor": "/model.8/m.0/cv3/act/Sigmoid_output_0",
+      "producer": "/model.8/m.0/cv3/act/Sigmoid",
+      "module": "/model.8/m.0/cv3/",
+      "local_sqnr_db": 51.68,
+      "accum_sqnr_db": 23.21
+    },
+    {
+      "tensor": "/model.8/m.0/cv3/act/Mul_output_0",
+      "producer": "/model.8/m.0/cv3/act/Mul",
+      "module": "/model.8/m.0/cv3/",
+      "local_sqnr_db": 35.61,
+      "accum_sqnr_db": 18.13
+    },
+    {
+      "tensor": "/model.8/Concat_output_0",
+      "producer": "/model.8/Concat",
+      "module": "/model.8/",
+      "local_sqnr_db": 34.5,
+      "accum_sqnr_db": 16.49
+    },
+    {
+      "tensor": "/model.8/cv2/conv/Conv_output_0",
+      "producer": "/model.8/cv2/conv/Conv",
+      "module": "/model.8/cv2/",
+      "local_sqnr_db": 38.02,
+      "accum_sqnr_db": 19.61
+    },
+    {
+      "tensor": "/model.8/cv2/act/Sigmoid_output_0",
+      "producer": "/model.8/cv2/act/Sigmoid",
+      "module": "/model.8/cv2/",
+      "local_sqnr_db": 52.02,
+      "accum_sqnr_db": 22.61
+    },
+    {
+      "tensor": "/model.8/cv2/act/Mul_output_0",
+      "producer": "/model.8/cv2/act/Mul",
+      "module": "/model.8/cv2/",
+      "local_sqnr_db": 37.41,
+      "accum_sqnr_db": 17.49
+    },
+    {
+      "tensor": "/model.9/cv1/conv/Conv_output_0",
+      "producer": "/model.9/cv1/conv/Conv",
+      "module": "/model.9/cv1/",
+      "local_sqnr_db": 43.63,
+      "accum_sqnr_db": 24.45
+    },
+    {
+      "tensor": "/model.9/m/MaxPool_output_0",
+      "producer": "/model.9/m/MaxPool",
+      "module": "/model.9/m/",
+      "local_sqnr_db": 189.55,
+      "accum_sqnr_db": 28.25
+    },
+    {
+      "tensor": "/model.9/m_1/MaxPool_output_0",
+      "producer": "/model.9/m_1/MaxPool",
+      "module": "/model.9/m_1/",
+      "local_sqnr_db": 190.79,
+      "accum_sqnr_db": 29.27
+    },
+    {
+      "tensor": "/model.9/m_2/MaxPool_output_0",
+      "producer": "/model.9/m_2/MaxPool",
+      "module": "/model.9/m_2/",
+      "local_sqnr_db": 191.52,
+      "accum_sqnr_db": 29.77
+    },
+    {
+      "tensor": "/model.9/Concat_output_0",
+      "producer": "/model.9/Concat",
+      "module": "/model.9/",
+      "local_sqnr_db": 46.83,
+      "accum_sqnr_db": 28.36
+    },
+    {
+      "tensor": "/model.9/cv2/conv/Conv_output_0",
+      "producer": "/model.9/cv2/conv/Conv",
+      "module": "/model.9/cv2/",
+      "local_sqnr_db": 40.24,
+      "accum_sqnr_db": 22.33
+    },
+    {
+      "tensor": "/model.9/cv2/act/Sigmoid_output_0",
+      "producer": "/model.9/cv2/act/Sigmoid",
+      "module": "/model.9/cv2/",
+      "local_sqnr_db": 50.93,
+      "accum_sqnr_db": 23.85
+    },
+    {
+      "tensor": "/model.9/cv2/act/Mul_output_0",
+      "producer": "/model.9/cv2/act/Mul",
+      "module": "/model.9/cv2/",
+      "local_sqnr_db": 35.71,
+      "accum_sqnr_db": 17.33
+    },
+    {
+      "tensor": "/model.10/cv1/conv/Conv_output_0",
+      "producer": "/model.10/cv1/conv/Conv",
+      "module": "/model.10/cv1/",
+      "local_sqnr_db": 36.24,
+      "accum_sqnr_db": 17.51
+    },
+    {
+      "tensor": "/model.10/cv1/act/Sigmoid_output_0",
+      "producer": "/model.10/cv1/act/Sigmoid",
+      "module": "/model.10/cv1/",
+      "local_sqnr_db": 52.6,
+      "accum_sqnr_db": 20.29
+    },
+    {
+      "tensor": "/model.10/cv1/act/Mul_output_0",
+      "producer": "/model.10/cv1/act/Mul",
+      "module": "/model.10/cv1/",
+      "local_sqnr_db": 38.02,
+      "accum_sqnr_db": 16.0
+    },
+    {
+      "tensor": "/model.10/Split_output_0",
+      "producer": "/model.10/Split",
+      "module": "/model.10/",
+      "local_sqnr_db": 180.7,
+      "accum_sqnr_db": 15.15
+    },
+    {
+      "tensor": "/model.10/Split_output_1",
+      "producer": "/model.10/Split",
+      "module": "/model.10/",
+      "local_sqnr_db": 180.31,
+      "accum_sqnr_db": 17.08
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/qkv/conv/Conv_output_0",
+      "producer": "/model.10/m/m.0/attn/qkv/conv/Conv",
+      "module": "/model.10/m/m.0/attn/qkv/",
+      "local_sqnr_db": 32.65,
+      "accum_sqnr_db": 16.73
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Reshape_output_0",
+      "producer": "/model.10/m/m.0/attn/Reshape",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 185.31,
+      "accum_sqnr_db": 16.62
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Split_output_0",
+      "producer": "/model.10/m/m.0/attn/Split",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 179.3,
+      "accum_sqnr_db": 17.61
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Split_output_1",
+      "producer": "/model.10/m/m.0/attn/Split",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 179.53,
+      "accum_sqnr_db": 16.98
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Split_output_2",
+      "producer": "/model.10/m/m.0/attn/Split",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 182.17,
+      "accum_sqnr_db": 16.02
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Mul_output_0",
+      "producer": "/model.10/m/m.0/attn/Mul",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 62.5,
+      "accum_sqnr_db": 17.61
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Reshape_2_output_0",
+      "producer": "/model.10/m/m.0/attn/Reshape_2",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 182.17,
+      "accum_sqnr_db": 16.02
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Transpose_output_0",
+      "producer": "/model.10/m/m.0/attn/Transpose",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 164.25,
+      "accum_sqnr_db": 17.61
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/pe/conv/Conv_output_0",
+      "producer": "/model.10/m/m.0/attn/pe/conv/Conv",
+      "module": "/model.10/m/m.0/attn/pe/",
+      "local_sqnr_db": 34.17,
+      "accum_sqnr_db": 15.47
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/MatMul_output_0",
+      "producer": "/model.10/m/m.0/attn/MatMul",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 36.19,
+      "accum_sqnr_db": 16.86
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Softmax_output_0",
+      "producer": "/model.10/m/m.0/attn/Softmax",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 20.36,
+      "accum_sqnr_db": 11.73
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Transpose_1_output_0",
+      "producer": "/model.10/m/m.0/attn/Transpose_1",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 146.82,
+      "accum_sqnr_db": 11.19
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/MatMul_1_output_0",
+      "producer": "/model.10/m/m.0/attn/MatMul_1",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 32.7,
+      "accum_sqnr_db": 15.57
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Reshape_1_output_0",
+      "producer": "/model.10/m/m.0/attn/Reshape_1",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 179.71,
+      "accum_sqnr_db": 15.49
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/Add_output_0",
+      "producer": "/model.10/m/m.0/attn/Add",
+      "module": "/model.10/m/m.0/attn/",
+      "local_sqnr_db": 34.4,
+      "accum_sqnr_db": 13.4
+    },
+    {
+      "tensor": "/model.10/m/m.0/attn/proj/conv/Conv_output_0",
+      "producer": "/model.10/m/m.0/attn/proj/conv/Conv",
+      "module": "/model.10/m/m.0/attn/proj/",
+      "local_sqnr_db": 35.69,
+      "accum_sqnr_db": 13.74
+    },
+    {
+      "tensor": "/model.10/m/m.0/Add_output_0",
+      "producer": "/model.10/m/m.0/Add",
+      "module": "/model.10/m/m.0/",
+      "local_sqnr_db": 36.51,
+      "accum_sqnr_db": 15.89
+    },
+    {
+      "tensor": "/model.10/m/m.0/ffn/ffn.0/conv/Conv_output_0",
+      "producer": "/model.10/m/m.0/ffn/ffn.0/conv/Conv",
+      "module": "/model.10/m/m.0/ffn/ffn.0/",
+      "local_sqnr_db": 42.24,
+      "accum_sqnr_db": 20.28
+    },
+    {
+      "tensor": "/model.10/m/m.0/ffn/ffn.0/act/Sigmoid_output_0",
+      "producer": "/model.10/m/m.0/ffn/ffn.0/act/Sigmoid",
+      "module": "/model.10/m/m.0/ffn/ffn.0/",
+      "local_sqnr_db": 48.12,
+      "accum_sqnr_db": 19.24
+    },
+    {
+      "tensor": "/model.10/m/m.0/ffn/ffn.0/act/Mul_output_0",
+      "producer": "/model.10/m/m.0/ffn/ffn.0/act/Mul",
+      "module": "/model.10/m/m.0/ffn/ffn.0/",
+      "local_sqnr_db": 34.44,
+      "accum_sqnr_db": 14.68
+    },
+    {
+      "tensor": "/model.10/m/m.0/ffn/ffn.1/conv/Conv_output_0",
+      "producer": "/model.10/m/m.0/ffn/ffn.1/conv/Conv",
+      "module": "/model.10/m/m.0/ffn/ffn.1/",
+      "local_sqnr_db": 31.93,
+      "accum_sqnr_db": 13.86
+    },
+    {
+      "tensor": "/model.10/m/m.0/Add_1_output_0",
+      "producer": "/model.10/m/m.0/Add_1",
+      "module": "/model.10/m/m.0/",
+      "local_sqnr_db": 35.17,
+      "accum_sqnr_db": 15.13
+    },
+    {
+      "tensor": "/model.10/Concat_output_0",
+      "producer": "/model.10/Concat",
+      "module": "/model.10/",
+      "local_sqnr_db": 32.6,
+      "accum_sqnr_db": 15.11
+    },
+    {
+      "tensor": "/model.10/cv2/conv/Conv_output_0",
+      "producer": "/model.10/cv2/conv/Conv",
+      "module": "/model.10/cv2/",
+      "local_sqnr_db": 38.66,
+      "accum_sqnr_db": 19.03
+    },
+    {
+      "tensor": "/model.10/cv2/act/Sigmoid_output_0",
+      "producer": "/model.10/cv2/act/Sigmoid",
+      "module": "/model.10/cv2/",
+      "local_sqnr_db": 50.09,
+      "accum_sqnr_db": 20.1
+    },
+    {
+      "tensor": "/model.10/cv2/act/Mul_output_0",
+      "producer": "/model.10/cv2/act/Mul",
+      "module": "/model.10/cv2/",
+      "local_sqnr_db": 33.31,
+      "accum_sqnr_db": 14.67
+    },
+    {
+      "tensor": "/model.11/Resize_output_0",
+      "producer": "/model.11/Resize",
+      "module": "/model.11/",
+      "local_sqnr_db": 180.35,
+      "accum_sqnr_db": 14.62
+    },
+    {
+      "tensor": "/model.12/Concat_output_0",
+      "producer": "/model.12/Concat",
+      "module": "/model.12/",
+      "local_sqnr_db": 38.9,
+      "accum_sqnr_db": 15.22
+    },
+    {
+      "tensor": "/model.13/cv1/conv/Conv_output_0",
+      "producer": "/model.13/cv1/conv/Conv",
+      "module": "/model.13/cv1/",
+      "local_sqnr_db": 37.14,
+      "accum_sqnr_db": 17.69
+    },
+    {
+      "tensor": "/model.13/cv1/act/Sigmoid_output_0",
+      "producer": "/model.13/cv1/act/Sigmoid",
+      "module": "/model.13/cv1/",
+      "local_sqnr_db": 53.23,
+      "accum_sqnr_db": 23.42
+    },
+    {
+      "tensor": "/model.13/cv1/act/Mul_output_0",
+      "producer": "/model.13/cv1/act/Mul",
+      "module": "/model.13/cv1/",
+      "local_sqnr_db": 38.66,
+      "accum_sqnr_db": 16.39
+    },
+    {
+      "tensor": "/model.13/Split_output_0",
+      "producer": "/model.13/Split",
+      "module": "/model.13/",
+      "local_sqnr_db": 179.35,
+      "accum_sqnr_db": 15.89
+    },
+    {
+      "tensor": "/model.13/Split_output_1",
+      "producer": "/model.13/Split",
+      "module": "/model.13/",
+      "local_sqnr_db": 175.26,
+      "accum_sqnr_db": 17.82
+    },
+    {
+      "tensor": "/model.13/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.13/m.0/cv1/conv/Conv",
+      "module": "/model.13/m.0/cv1/",
+      "local_sqnr_db": 37.72,
+      "accum_sqnr_db": 17.81
+    },
+    {
+      "tensor": "/model.13/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.13/m.0/cv1/act/Sigmoid",
+      "module": "/model.13/m.0/cv1/",
+      "local_sqnr_db": 53.61,
+      "accum_sqnr_db": 23.98
+    },
+    {
+      "tensor": "/model.13/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.13/m.0/cv1/act/Mul",
+      "module": "/model.13/m.0/cv1/",
+      "local_sqnr_db": 36.81,
+      "accum_sqnr_db": 16.57
+    },
+    {
+      "tensor": "/model.13/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.13/m.0/cv2/conv/Conv",
+      "module": "/model.13/m.0/cv2/",
+      "local_sqnr_db": 34.95,
+      "accum_sqnr_db": 16.4
+    },
+    {
+      "tensor": "/model.13/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.13/m.0/cv2/act/Sigmoid",
+      "module": "/model.13/m.0/cv2/",
+      "local_sqnr_db": 53.08,
+      "accum_sqnr_db": 23.58
+    },
+    {
+      "tensor": "/model.13/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.13/m.0/cv2/act/Mul",
+      "module": "/model.13/m.0/cv2/",
+      "local_sqnr_db": 38.67,
+      "accum_sqnr_db": 16.87
+    },
+    {
+      "tensor": "/model.13/m.0/Add_output_0",
+      "producer": "/model.13/m.0/Add",
+      "module": "/model.13/m.0/",
+      "local_sqnr_db": 39.63,
+      "accum_sqnr_db": 17.15
+    },
+    {
+      "tensor": "/model.13/Concat_output_0",
+      "producer": "/model.13/Concat",
+      "module": "/model.13/",
+      "local_sqnr_db": 37.64,
+      "accum_sqnr_db": 16.78
+    },
+    {
+      "tensor": "/model.13/cv2/conv/Conv_output_0",
+      "producer": "/model.13/cv2/conv/Conv",
+      "module": "/model.13/cv2/",
+      "local_sqnr_db": 36.74,
+      "accum_sqnr_db": 16.93
+    },
+    {
+      "tensor": "/model.13/cv2/act/Sigmoid_output_0",
+      "producer": "/model.13/cv2/act/Sigmoid",
+      "module": "/model.13/cv2/",
+      "local_sqnr_db": 52.79,
+      "accum_sqnr_db": 23.16
+    },
+    {
+      "tensor": "/model.13/cv2/act/Mul_output_0",
+      "producer": "/model.13/cv2/act/Mul",
+      "module": "/model.13/cv2/",
+      "local_sqnr_db": 35.25,
+      "accum_sqnr_db": 14.92
+    },
+    {
+      "tensor": "/model.14/Resize_output_0",
+      "producer": "/model.14/Resize",
+      "module": "/model.14/",
+      "local_sqnr_db": 183.5,
+      "accum_sqnr_db": 14.89
+    },
+    {
+      "tensor": "/model.15/Concat_output_0",
+      "producer": "/model.15/Concat",
+      "module": "/model.15/",
+      "local_sqnr_db": 35.97,
+      "accum_sqnr_db": 15.19
+    },
+    {
+      "tensor": "/model.16/cv1/conv/Conv_output_0",
+      "producer": "/model.16/cv1/conv/Conv",
+      "module": "/model.16/cv1/",
+      "local_sqnr_db": 37.22,
+      "accum_sqnr_db": 19.13
+    },
+    {
+      "tensor": "/model.16/cv1/act/Sigmoid_output_0",
+      "producer": "/model.16/cv1/act/Sigmoid",
+      "module": "/model.16/cv1/",
+      "local_sqnr_db": 54.81,
+      "accum_sqnr_db": 27.52
+    },
+    {
+      "tensor": "/model.16/cv1/act/Mul_output_0",
+      "producer": "/model.16/cv1/act/Mul",
+      "module": "/model.16/cv1/",
+      "local_sqnr_db": 42.62,
+      "accum_sqnr_db": 19.98
+    },
+    {
+      "tensor": "/model.16/Split_output_0",
+      "producer": "/model.16/Split",
+      "module": "/model.16/",
+      "local_sqnr_db": 182.41,
+      "accum_sqnr_db": 19.54
+    },
+    {
+      "tensor": "/model.16/Split_output_1",
+      "producer": "/model.16/Split",
+      "module": "/model.16/",
+      "local_sqnr_db": 179.17,
+      "accum_sqnr_db": 21.0
+    },
+    {
+      "tensor": "/model.16/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.16/m.0/cv1/conv/Conv",
+      "module": "/model.16/m.0/cv1/",
+      "local_sqnr_db": 39.25,
+      "accum_sqnr_db": 17.03
+    },
+    {
+      "tensor": "/model.16/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.16/m.0/cv1/act/Sigmoid",
+      "module": "/model.16/m.0/cv1/",
+      "local_sqnr_db": 53.41,
+      "accum_sqnr_db": 24.9
+    },
+    {
+      "tensor": "/model.16/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.16/m.0/cv1/act/Mul",
+      "module": "/model.16/m.0/cv1/",
+      "local_sqnr_db": 42.0,
+      "accum_sqnr_db": 17.91
+    },
+    {
+      "tensor": "/model.16/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.16/m.0/cv2/conv/Conv",
+      "module": "/model.16/m.0/cv2/",
+      "local_sqnr_db": 35.31,
+      "accum_sqnr_db": 16.08
+    },
+    {
+      "tensor": "/model.16/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.16/m.0/cv2/act/Sigmoid",
+      "module": "/model.16/m.0/cv2/",
+      "local_sqnr_db": 53.69,
+      "accum_sqnr_db": 23.44
+    },
+    {
+      "tensor": "/model.16/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.16/m.0/cv2/act/Mul",
+      "module": "/model.16/m.0/cv2/",
+      "local_sqnr_db": 39.15,
+      "accum_sqnr_db": 17.02
+    },
+    {
+      "tensor": "/model.16/m.0/Add_output_0",
+      "producer": "/model.16/m.0/Add",
+      "module": "/model.16/m.0/",
+      "local_sqnr_db": 40.25,
+      "accum_sqnr_db": 17.78
+    },
+    {
+      "tensor": "/model.16/Concat_output_0",
+      "producer": "/model.16/Concat",
+      "module": "/model.16/",
+      "local_sqnr_db": 39.02,
+      "accum_sqnr_db": 18.66
+    },
+    {
+      "tensor": "/model.16/cv2/conv/Conv_output_0",
+      "producer": "/model.16/cv2/conv/Conv",
+      "module": "/model.16/cv2/",
+      "local_sqnr_db": 36.31,
+      "accum_sqnr_db": 17.43
+    },
+    {
+      "tensor": "/model.16/cv2/act/Sigmoid_output_0",
+      "producer": "/model.16/cv2/act/Sigmoid",
+      "module": "/model.16/cv2/",
+      "local_sqnr_db": 53.91,
+      "accum_sqnr_db": 25.38
+    },
+    {
+      "tensor": "/model.16/cv2/act/Mul_output_0",
+      "producer": "/model.16/cv2/act/Mul",
+      "module": "/model.16/cv2/",
+      "local_sqnr_db": 41.32,
+      "accum_sqnr_db": 18.0
+    },
+    {
+      "tensor": "/model.17/conv/Conv_output_0",
+      "producer": "/model.17/conv/Conv",
+      "module": "/model.17/",
+      "local_sqnr_db": 37.02,
+      "accum_sqnr_db": 15.6
+    },
+    {
+      "tensor": "/model.20/cv2.0/cv2.0.0/conv/Conv_output_0",
+      "producer": "/model.20/cv2.0/cv2.0.0/conv/Conv",
+      "module": "/model.20/cv2.0/cv2.0.0/",
+      "local_sqnr_db": 35.51,
+      "accum_sqnr_db": 16.12
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/conv/Conv_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/conv/Conv",
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/",
+      "local_sqnr_db": 37.3,
+      "accum_sqnr_db": 21.56
+    },
+    {
+      "tensor": "/model.17/act/Sigmoid_output_0",
+      "producer": "/model.17/act/Sigmoid",
+      "module": "/model.17/",
+      "local_sqnr_db": 52.32,
+      "accum_sqnr_db": 20.38
+    },
+    {
+      "tensor": "/model.20/cv2.0/cv2.0.0/act/Mul_output_0",
+      "producer": "/model.20/cv2.0/cv2.0.0/act/Mul",
+      "module": "/model.20/cv2.0/cv2.0.0/",
+      "local_sqnr_db": 35.34,
+      "accum_sqnr_db": 14.12
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/act/Mul_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/act/Mul",
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.0/",
+      "local_sqnr_db": 43.64,
+      "accum_sqnr_db": 22.39
+    },
+    {
+      "tensor": "/model.17/act/Mul_output_0",
+      "producer": "/model.17/act/Mul",
+      "module": "/model.17/",
+      "local_sqnr_db": 35.12,
+      "accum_sqnr_db": 13.36
+    },
+    {
+      "tensor": "/model.20/cv2.0/cv2.0.1/conv/Conv_output_0",
+      "producer": "/model.20/cv2.0/cv2.0.1/conv/Conv",
+      "module": "/model.20/cv2.0/cv2.0.1/",
+      "local_sqnr_db": 30.21,
+      "accum_sqnr_db": 13.84
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/conv/Conv_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/conv/Conv",
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/",
+      "local_sqnr_db": 34.99,
+      "accum_sqnr_db": 13.45
+    },
+    {
+      "tensor": "/model.18/Concat_output_0",
+      "producer": "/model.18/Concat",
+      "module": "/model.18/",
+      "local_sqnr_db": 34.49,
+      "accum_sqnr_db": 14.08
+    },
+    {
+      "tensor": "/model.20/cv2.0/cv2.0.1/act/Mul_output_0",
+      "producer": "/model.20/cv2.0/cv2.0.1/act/Mul",
+      "module": "/model.20/cv2.0/cv2.0.1/",
+      "local_sqnr_db": 33.83,
+      "accum_sqnr_db": 13.95
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/act/Mul_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/act/Mul",
+      "module": "/model.20/cv3.0/cv3.0.0/cv3.0.0.1/",
+      "local_sqnr_db": 37.97,
+      "accum_sqnr_db": 13.09
+    },
+    {
+      "tensor": "/model.19/cv1/conv/Conv_output_0",
+      "producer": "/model.19/cv1/conv/Conv",
+      "module": "/model.19/cv1/",
+      "local_sqnr_db": 33.75,
+      "accum_sqnr_db": 16.01
+    },
+    {
+      "tensor": "/model.20/cv2.0/cv2.0.2/Conv_output_0",
+      "producer": "/model.20/cv2.0/cv2.0.2/Conv",
+      "module": "/model.20/cv2.0/cv2.0.2/",
+      "local_sqnr_db": 38.39,
+      "accum_sqnr_db": 17.02
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/conv/Conv_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/conv/Conv",
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/",
+      "local_sqnr_db": 31.2,
+      "accum_sqnr_db": 12.31
+    },
+    {
+      "tensor": "/model.19/cv1/act/Sigmoid_output_0",
+      "producer": "/model.19/cv1/act/Sigmoid",
+      "module": "/model.19/cv1/",
+      "local_sqnr_db": 52.92,
+      "accum_sqnr_db": 22.94
+    },
+    {
+      "tensor": "/model.19/cv1/act/Mul_output_0",
+      "producer": "/model.19/cv1/act/Mul",
+      "module": "/model.19/cv1/",
+      "local_sqnr_db": 34.6,
+      "accum_sqnr_db": 14.87
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/act/Mul_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/act/Mul",
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.0/",
+      "local_sqnr_db": 34.61,
+      "accum_sqnr_db": 12.4
+    },
+    {
+      "tensor": "/model.19/Split_output_0",
+      "producer": "/model.19/Split",
+      "module": "/model.19/",
+      "local_sqnr_db": 177.64,
+      "accum_sqnr_db": 14.32
+    },
+    {
+      "tensor": "/model.19/Split_output_1",
+      "producer": "/model.19/Split",
+      "module": "/model.19/",
+      "local_sqnr_db": 173.94,
+      "accum_sqnr_db": 16.27
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/conv/Conv_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/conv/Conv",
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/",
+      "local_sqnr_db": 32.66,
+      "accum_sqnr_db": 13.59
+    },
+    {
+      "tensor": "/model.19/m.0/cv1/conv/Conv_output_0",
+      "producer": "/model.19/m.0/cv1/conv/Conv",
+      "module": "/model.19/m.0/cv1/",
+      "local_sqnr_db": 35.69,
+      "accum_sqnr_db": 16.24
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/act/Mul_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/act/Mul",
+      "module": "/model.20/cv3.0/cv3.0.1/cv3.0.1.1/",
+      "local_sqnr_db": 36.59,
+      "accum_sqnr_db": 14.16
+    },
+    {
+      "tensor": "/model.19/m.0/cv1/act/Sigmoid_output_0",
+      "producer": "/model.19/m.0/cv1/act/Sigmoid",
+      "module": "/model.19/m.0/cv1/",
+      "local_sqnr_db": 52.26,
+      "accum_sqnr_db": 21.84
+    },
+    {
+      "tensor": "/model.20/cv3.0/cv3.0.2/Conv_output_0",
+      "producer": "/model.20/cv3.0/cv3.0.2/Conv",
+      "module": "/model.20/cv3.0/cv3.0.2/",
+      "local_sqnr_db": 49.51,
+      "accum_sqnr_db": 25.08
+    },
+    {
+      "tensor": "/model.19/m.0/cv1/act/Mul_output_0",
+      "producer": "/model.19/m.0/cv1/act/Mul",
+      "module": "/model.19/m.0/cv1/",
+      "local_sqnr_db": 36.91,
+      "accum_sqnr_db": 16.1
+    },
+    {
+      "tensor": "/model.19/m.0/cv2/conv/Conv_output_0",
+      "producer": "/model.19/m.0/cv2/conv/Conv",
+      "module": "/model.19/m.0/cv2/",
+      "local_sqnr_db": 33.88,
+      "accum_sqnr_db": 13.59
+    },
+    {
+      "tensor": "/model.19/m.0/cv2/act/Sigmoid_output_0",
+      "producer": "/model.19/m.0/cv2/act/Sigmoid",
+      "module": "/model.19/m.0/cv2/",
+      "local_sqnr_db": 54.31,
+      "accum_sqnr_db": 19.9
+    },
+    {
+      "tensor": "/model.19/m.0/cv2/act/Mul_output_0",
+      "producer": "/model.19/m.0/cv2/act/Mul",
+      "module": "/model.19/m.0/cv2/",
+      "local_sqnr_db": 35.96,
+      "accum_sqnr_db": 13.02
+    },
+    {
+      "tensor": "/model.19/m.0/Add_output_0",
+      "producer": "/model.19/m.0/Add",
+      "module": "/model.19/m.0/",
+      "local_sqnr_db": 35.2,
+      "accum_sqnr_db": 13.0
+    },
+    {
+      "tensor": "/model.19/Concat_output_0",
+      "producer": "/model.19/Concat",
+      "module": "/model.19/",
+      "local_sqnr_db": 33.72,
+      "accum_sqnr_db": 13.57
+    },
+    {
+      "tensor": "/model.19/cv2/conv/Conv_output_0",
+      "producer": "/model.19/cv2/conv/Conv",
+      "module": "/model.19/cv2/",
+      "local_sqnr_db": 34.69,
+      "accum_sqnr_db": 15.87
+    },
+    {
+      "tensor": "/model.19/cv2/act/Sigmoid_output_0",
+      "producer": "/model.19/cv2/act/Sigmoid",
+      "module": "/model.19/cv2/",
+      "local_sqnr_db": 51.57,
+      "accum_sqnr_db": 20.97
+    },
+    {
+      "tensor": "/model.19/cv2/act/Mul_output_0",
+      "producer": "/model.19/cv2/act/Mul",
+      "module": "/model.19/cv2/",
+      "local_sqnr_db": 36.8,
+      "accum_sqnr_db": 14.23
+    },
+    {
+      "tensor": "/model.20/cv2.1/cv2.1.0/conv/Conv_output_0",
+      "producer": "/model.20/cv2.1/cv2.1.0/conv/Conv",
+      "module": "/model.20/cv2.1/cv2.1.0/",
+      "local_sqnr_db": 33.7,
+      "accum_sqnr_db": 14.4
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/conv/Conv_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/conv/Conv",
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/",
+      "local_sqnr_db": 30.87,
+      "accum_sqnr_db": 15.96
+    },
+    {
+      "tensor": "/model.20/cv2.1/cv2.1.0/act/Mul_output_0",
+      "producer": "/model.20/cv2.1/cv2.1.0/act/Mul",
+      "module": "/model.20/cv2.1/cv2.1.0/",
+      "local_sqnr_db": 34.88,
+      "accum_sqnr_db": 12.55
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/act/Mul_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/act/Mul",
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.0/",
+      "local_sqnr_db": 34.52,
+      "accum_sqnr_db": 16.42
+    },
+    {
+      "tensor": "/model.20/cv2.1/cv2.1.1/conv/Conv_output_0",
+      "producer": "/model.20/cv2.1/cv2.1.1/conv/Conv",
+      "module": "/model.20/cv2.1/cv2.1.1/",
+      "local_sqnr_db": 31.57,
+      "accum_sqnr_db": 13.88
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/conv/Conv_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/conv/Conv",
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/",
+      "local_sqnr_db": 29.83,
+      "accum_sqnr_db": 13.37
+    },
+    {
+      "tensor": "/model.20/cv2.1/cv2.1.1/act/Mul_output_0",
+      "producer": "/model.20/cv2.1/cv2.1.1/act/Mul",
+      "module": "/model.20/cv2.1/cv2.1.1/",
+      "local_sqnr_db": 36.92,
+      "accum_sqnr_db": 14.07
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/act/Mul_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/act/Mul",
+      "module": "/model.20/cv3.1/cv3.1.0/cv3.1.0.1/",
+      "local_sqnr_db": 34.75,
+      "accum_sqnr_db": 13.02
+    },
+    {
+      "tensor": "/model.20/cv2.1/cv2.1.2/Conv_output_0",
+      "producer": "/model.20/cv2.1/cv2.1.2/Conv",
+      "module": "/model.20/cv2.1/cv2.1.2/",
+      "local_sqnr_db": 41.27,
+      "accum_sqnr_db": 17.56
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/conv/Conv_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/conv/Conv",
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/",
+      "local_sqnr_db": 25.03,
+      "accum_sqnr_db": 12.16
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/act/Mul_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/act/Mul",
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.0/",
+      "local_sqnr_db": 30.18,
+      "accum_sqnr_db": 12.05
+    },
+    {
+      "tensor": "/model.20/dfl/Softmax_output_0",
+      "producer": "/model.20/dfl/Softmax",
+      "module": "/model.20/dfl/",
+      "local_sqnr_db": 45.48,
+      "accum_sqnr_db": 10.48
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/conv/Conv_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/conv/Conv",
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/",
+      "local_sqnr_db": 25.97,
+      "accum_sqnr_db": 12.33
+    },
+    {
+      "tensor": "/model.20/dfl/conv/Conv_output_0",
+      "producer": "/model.20/dfl/conv/Conv",
+      "module": "/model.20/dfl/",
+      "local_sqnr_db": 48.82,
+      "accum_sqnr_db": 16.2
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/act/Mul_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/act/Mul",
+      "module": "/model.20/cv3.1/cv3.1.1/cv3.1.1.1/",
+      "local_sqnr_db": 28.71,
+      "accum_sqnr_db": 12.25
+    },
+    {
+      "tensor": "/model.20/cv3.1/cv3.1.2/Conv_output_0",
+      "producer": "/model.20/cv3.1/cv3.1.2/Conv",
+      "module": "/model.20/cv3.1/cv3.1.2/",
+      "local_sqnr_db": 41.68,
+      "accum_sqnr_db": 21.19
+    }
+  ]
+}
