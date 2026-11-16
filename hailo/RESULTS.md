@@ -80,6 +80,9 @@ Hailo INT8 클래스별 Moderate (괄호: fp 대비)
 - `04_emulate_eval.py` — 에뮬레이터 채점 스크립트
 - `05_compile_variant.py` — optimized HAR 에 compile 단계 `.alls` 줄만 바꿔 다시 compile (양자화 재실행 없음)
 - `results/diag/` — 위 진단 로그 요약
+- `06_board_e2e.py` — 보드 end-to-end 구간별 지연(읽기/전처리/NPU/디코드/NMS) + 예측 덤프.
+  `--backend emulator` 로 PC 검증: D 16장 덤프가 04 채점 예측과 바이트 단위 일치.
+  `--backend hailort` 경로(hailo_platform InferModel API)는 보드에서 처음 돈다 — 미검증
 
 ## 알려진 함정 (이번에 겪은 것)
 
