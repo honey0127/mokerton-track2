@@ -1,0 +1,12 @@
+# 분할 탐색 중 'Found valid partition' 횟수 (context 수별)
+      7 2 contexts
+     58 3 contexts
+     24 4 contexts
+# 마지막 결과
+== 추가 model script:
+performance_param(compiler_optimization_level=max)
+[info] Loading model script commands to zoo_yolo11n from string
+[info] Applying selected partition to 3 contexts...
+[info] Applying selected partition to 4 contexts...
+[info] zoo_yolo11n Successful Compilation (duration: 20m 9s)
+== HEF 저장: zoo_perf_max.hef (5.51 MB)

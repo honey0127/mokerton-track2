@@ -67,8 +67,15 @@ Hailo INT8 클래스별 Moderate (괄호: fp 대비)
 - **P5 제거는 context 수를 줄이지 못했다** (1280: 5→5, 640: 4→4). B·D 의 Hailo 속도 이점은 보드 실측 전엔 근거 없음.
 - **같은 yolov11n 인데 공식 빌드 3 vs 우리 4.** 차이는 빌드 설정에 있다.
   `allocator_param(width_splitter_defuse=disabled)` (Model Zoo `.alls` 에 있는 줄) 는 D·yolov11n 모두
-  context 수를 바꾸지 못함 → 원인 아님. 남은 후보(미확인): 공식 빌드의 양자화 레벨,
-  `change_output_activation(sigmoid)`, `nms_postprocess`, hailomz 의 compile 기본값.
+  context 수를 바꾸지 못함 → 원인 아님.
+- `performance_param(compiler_optimization_level=max)` (hailomz `--performance` 가 compile 직전에 넣는 줄,
+  `hailo_model_zoo/core/main_utils.py` 확인) 도 **최종 4 context** — yolov11n(20분), D(14분) 모두.
+  탐색 중 2·3 context 분할은 찾았고 로그상 3→2→3 으로 적용을 시도했다가 4 로 끝났다
+  (적용 실패인지 성능 판단인지는 로그로 구분 안 됨). `results/diag/*_perf_max.txt`.
+  → 공식 빌드(3)와의 차이는 compile 설정이 아니라 그 앞 단계(양자화 레벨·16비트 층,
+  `change_output_activation(sigmoid)`, `nms_postprocess`, 빌드 당시 DFC 버전)에 있을 것 (미확인).
+  context 수는 속도 지표가 아니고 FPS 는 보드에서만 알 수 있으므로 추적은 여기서 중단.
+- 보드 비교용으로 `hef/D_640x192_perfmax.hef` (max 최적화, 4 context) 를 같이 둔다. 기본판과 FPS 비교.
 - profiler 의 "Model Parameters 3.90M"(A) 은 기존 2.58M 과 다르다. 원인 미확인 — 보고서에는 기존 값 사용.
 
 ## 파일
