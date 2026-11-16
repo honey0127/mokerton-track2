@@ -1,0 +1,26 @@
+Would you like to add nms postprocess command to the model script? (y/n) 
+[info] Loading model script commands to zoo_yolo11n from hailo_out/zoo_yolo11n/model_script.alls
+[info] To achieve optimal performance, set the compiler_optimization_level to "max" by adding performance_param(compiler_optimization_level=max) to the model script. Note that this may increase compilation time.
+[info] zoo_yolo11n Single Context Partition Failed (duration: 0s)
+[info] Single context flow failed: Recoverable single context error - Resources presolve failed: lcus=(142/80)
+[info] Found valid partition to 3 contexts
+[info] Found valid partition to 3 contexts, Performance improved by 21.6%
+[info] Found valid partition to 4 contexts, Performance improved by 1.8%
+[info] Found valid partition to 4 contexts, Performance improved by 2.7%
+[info] Found valid partition to 4 contexts, Performance improved by 2.5%
+[info] Found valid partition to 4 contexts, Performance improved by 5.4%
+[info] Found valid partition to 4 contexts, Performance improved by 0.8%
+[info] Found valid partition to 4 contexts, Performance improved by 0.6%
+[info] Found valid partition to 4 contexts, Performance improved by 1.1%
+[info] Found valid partition to 4 contexts, Performance improved by 4.4%
+[info] Found valid partition to 4 contexts, Performance improved by 1.2%
+[info] Found valid partition to 4 contexts, Performance improved by 0.2%
+[info] Found valid partition to 4 contexts, Performance improved by 2.2%
+[info] Found valid partition to 4 contexts, Performance improved by 2.4%
+[info] Found valid partition to 4 contexts, Performance improved by 2.8%
+[info] Found valid partition to 4 contexts, Performance improved by 6.7%
+[info] Found valid partition to 4 contexts, Performance improved by 1.7%
+[info] Found valid partition to 4 contexts, Performance improved by 1.5%
+[info] Found valid partition to 4 contexts, Performance improved by 0.3%
+[info] Applying selected partition to 4 contexts...
+[info] zoo_yolo11n Successful Compilation (duration: 4m 40s)

@@ -1,0 +1,28 @@
+Model Details
+--------------------------------  ----------
+Input Tensors Shapes              192x640x3
+Operations per Input Tensor       1.90 GOPs
+Operations per Input Tensor       0.96 GMACs
+Pure Operations per Input Tensor  1.90 GOPs
+Pure Operations per Input Tensor  0.96 GMACs
+Model Parameters                  3.08 M
+--------------------------------  ----------
+
+Profiler Input Settings
+-----------------  -----------------
+Optimization Goal  Reach Highest FPS
+Profiler Mode      Compiled
+-----------------  -----------------
+
+Performance Summary
+----------------------  ---
+Number of Devices       1
+Number of Contexts      4
+Throughput              N/A
+Latency                 N/A
+Operations per Second   N/A
+MACs per Second         N/A
+Total Input Bandwidth   N/A
+Total Output Bandwidth  N/A
+Context Switch Configs  N/A
+----------------------  ---

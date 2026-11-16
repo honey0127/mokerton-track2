@@ -1,0 +1,18 @@
+== 추가 model script:
+allocator_param(width_splitter_defuse=disabled)
+[info] Loading model script commands to D_640x192 from string
+[info] To achieve optimal performance, set the compiler_optimization_level to "max" by adding performance_param(compiler_optimization_level=max) to the model script. Note that this may increase compilation time.
+[info] D_640x192 Single Context Partition Failed (duration: 0s)
+[info] Single context flow failed: Recoverable single context error - Resources presolve failed: lcus=(118/80)
+[info] Found valid partition to 3 contexts
+[info] Found valid partition to 3 contexts, Performance improved by 15.8%
+[info] Found valid partition to 3 contexts, Performance improved by 7.0%
+[info] Found valid partition to 3 contexts, Performance improved by 2.6%
+[info] Found valid partition to 3 contexts, Performance improved by 1.3%
+[info] Found valid partition to 3 contexts, Performance improved by 1.4%
+[info] Found valid partition to 3 contexts, Performance improved by 1.0%
+[info] Found valid partition to 3 contexts, Performance improved by 0.7%
+[info] Found valid partition to 4 contexts, Performance improved by 1.8%
+[info] Applying selected partition to 4 contexts...
+[info] D_640x192 Successful Compilation (duration: 3m 7s)
+== HEF 저장: diag/D_zoo_alloc.hef (4.11 MB)

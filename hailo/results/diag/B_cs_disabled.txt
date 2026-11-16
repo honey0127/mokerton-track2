@@ -1,0 +1,12 @@
+== 추가 model script:
+context_switch_param(mode=disabled)
+[info] Loading model script commands to B_1280x384 from string
+[info] To achieve optimal performance, set the compiler_optimization_level to "max" by adding performance_param(compiler_optimization_level=max) to the model script. Note that this may increase compilation time.
+[info] B_1280x384 Single Context Partition Failed (duration: 0s)
+[error] B_1280x384 Partition and Allocation Failed (duration: 7s)
+[error] B_1280x384 Compilation Failed (duration: 7s)
+Context switch is disabled, but model could not fit in single context. consider changing it and try again.
+Detailed error is: Recoverable single context error - Resources presolve failed: lcus=(118/80)
+[error] Failed to produce compiled graph
+[error] BackendAllocatorException: Compilation failed: Context switch is disabled, but model could not fit in single context. consider changing it and try again.
+Detailed error is: Recoverable single context error - Resources presolve failed: lcus=(118/80)
