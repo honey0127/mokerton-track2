@@ -131,7 +131,9 @@ fi
 
 # ---------------------------------------------------------------- 4. profile
 say "4/4  profile (예상 성능)"
-hailo profiler "${OUT}/${NAME}_optimized.har" \
+# compiled HAR 로 돌려야 context 수/리소스가 나온다 (optimized HAR 는 compile 전 상태).
+# multi-context 모델은 FPS/latency 가 N/A — 보드 실측(hailortcli run)이 필요하다.
+hailo profiler "${OUT}/${NAME}_compiled.har" \
   --out-path "${OUT}/profile.html" \
   2>&1 | tee -a "$LOG" || \
   echo "  profiler 실패 (플래그명이 버전마다 다름). hailo profiler --help 확인" | tee -a "$LOG"

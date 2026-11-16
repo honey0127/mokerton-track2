@@ -1,0 +1,52 @@
+[1m== 환경 확인[0m
+Hailo Dataflow Compiler v5.4.0
+[1m== 입력[0m
+ONNX      : B_1280x384.onnx
+end nodes : /model.20/cv2.0/cv2.0.2/Conv,/model.20/cv3.0/cv3.0.2/Conv,/model.20/cv2.1/cv2.1.2/Conv,/model.20/cv3.1/cv3.1.2/Conv
+calib     : calib_256.npy
+arch      : hailo10h
+[1m== 지원 하드웨어 아키텍처 확인[0m
+                         [--hw-arch {hailo15h,hailo15m,hailo15l,hailo10h,hailo10p}]
+  --hw-arch {hailo15h,hailo15m,hailo15l,hailo10h,hailo10p}
+[1m== 1/4  parse (ONNX -> HAR)[0m
+[info] Running `hailo parser onnx B_1280x384.onnx --hw-arch hailo10h --har-path hailo_out/B_1280x384/B_1280x384.har --end-node-names /model.20/cv2.0/cv2.0.2/Conv /model.20/cv3.0/cv3.0.2/Conv /model.20/cv2.1/cv2.1.2/Conv /model.20/cv3.1/cv3.1.2/Conv`
+[info] Translation started on ONNX model B_1280x384
+[info] Restored ONNX model B_1280x384 (completion time: 00:00:00.02)
+[info] Translation completed on ONNX model B_1280x384 (completion time: 00:00:00.37)
+[info] Saved HAR to: /home/hongoh/hailo_B/hailo_out/B_1280x384/B_1280x384.har
+[1m== 2/4  optimize (양자화 — 여기가 가장 오래 걸립니다)[0m
+[info] Running `hailo optimize hailo_out/B_1280x384/B_1280x384.har --hw-arch hailo10h --calib-set-path calib_256.npy --model-script hailo_out/B_1280x384/model_script.alls --output-har-path hailo_out/B_1280x384/B_1280x384_optimized.har`
+[info] Saved HAR to: /home/hongoh/hailo_B/hailo_out/B_1280x384/B_1280x384_optimized.har
+[1m== 3/4  compile (HAR -> HEF)[0m
+[info] Running `hailo compiler hailo_out/B_1280x384/B_1280x384_optimized.har --hw-arch hailo10h --output-dir hailo_out/B_1280x384`
+[info] B_1280x384 Successful Pre Builder (duration: 0s)
+[info] B_1280x384 Successful Pre Partition (duration: 7s)
+[info] B_1280x384 Single Context Partition Failed (duration: 0s)
+[info] Single context flow failed: Recoverable single context error - Resources presolve failed: lcus=(118/80)
+[info] Resources optimization params: max_control_utilization=60%, max_compute_utilization=60%, max_compute_16bit_utilization=60%, max_memory_utilization (weights)=60%, max_input_aligner_utilization=60%, max_apu_utilization=60%
+[info] Found valid partition to 3 contexts
+[info] Found valid partition to 3 contexts, Performance improved by 29.2%
+[info] Found valid partition to 3 contexts, Performance improved by 2.6%
+[info] Found valid partition to 3 contexts, Performance improved by 6.9%
+[info] Found valid partition to 3 contexts, Performance improved by 4.8%
+[info] Found valid partition to 3 contexts, Performance improved by 0.1%
+[info] Found valid partition to 3 contexts, Performance improved by 2.2%
+[info] Found valid partition to 4 contexts, Performance improved by 0.5%
+[info] Found valid partition to 4 contexts, Performance improved by 1.5%
+[info] Found valid partition to 4 contexts, Performance improved by 1.3%
+[info] Found valid partition to 4 contexts, Performance improved by 0.5%
+[info] Found valid partition to 4 contexts, Performance improved by 2.7%
+[info] Found valid partition to 4 contexts, Performance improved by 9.7%
+[info] Found valid partition to 4 contexts, Performance improved by 0.6%
+[info] Found valid partition to 5 contexts, Performance improved by 0.1%
+[info] Applying selected partition to 5 contexts...
+[info] B_1280x384 Successful Multi Context Partition (duration: 4m 32s)
+[info] B_1280x384 Successful Allocation (duration: 9s)
+[info] B_1280x384 Successful Partition and Allocation (duration: 4m 53s)
+[info] B_1280x384 Successful Kernel Compilation (duration: 1s)
+[info] B_1280x384 Successful Compilation (duration: 4m 57s)
+[info] Saved HEF to: /home/hongoh/hailo_B/hailo_out/B_1280x384/B_1280x384.hef
+[info] Saved HAR to: /home/hongoh/hailo_B/hailo_out/B_1280x384/B_1280x384_compiled.har
+[1m== 4/4  profile (예상 성능)[0m
+[info] Saved Profiler HTML Report to: /home/hongoh/hailo_B/hailo_out/B_1280x384/profile.html
+[1m== 완료[0m
