@@ -1,0 +1,46 @@
+{
+  "imgsz": [
+    384,
+    1280
+  ],
+  "bounds": [
+    64,
+    128
+  ],
+  "difficulty": "moderate",
+  "n_images": 6481,
+  "result": {
+    "Car": {
+      "P3": 6724,
+      "P4": 4308,
+      "P5": 2583,
+      "total": 13615,
+      "P5_pct": 18.972,
+      "median_height_px": 50.6
+    },
+    "Pedestrian": {
+      "P3": 1704,
+      "P4": 1117,
+      "P5": 275,
+      "total": 3096,
+      "P5_pct": 8.882,
+      "median_height_px": 93.0
+    },
+    "Cyclist": {
+      "P3": 660,
+      "P4": 209,
+      "P5": 91,
+      "total": 960,
+      "P5_pct": 9.479,
+      "median_height_px": 61.3
+    },
+    "(전체)": {
+      "P3": 9088,
+      "P4": 5634,
+      "P5": 2949,
+      "total": 17671,
+      "P5_pct": 16.688,
+      "median_height_px": 56.5
+    }
+  }
+}
