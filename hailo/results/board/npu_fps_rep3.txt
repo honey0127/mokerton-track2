@@ -1,0 +1,21 @@
+A_1280x384 r1 A_1280x384: fps: 199.60
+B_1280x384 r1 B_1280x384: fps: 201.71
+C_640x192 r1 C_640x192: fps: 365.03
+D_640x192 r1 D_640x192: fps: 421.09
+D_640x192_perfmax r1 D_640x192: fps: 499.59
+temp=35.6'C
+throttled=0x0
+A_1280x384 r2 A_1280x384: fps: 199.64
+B_1280x384 r2 B_1280x384: fps: 202.11
+C_640x192 r2 C_640x192: fps: 366.66
+D_640x192 r2 D_640x192: fps: 419.50
+D_640x192_perfmax r2 D_640x192: fps: 500.23
+temp=36.7'C
+throttled=0x0
+A_1280x384 r3 A_1280x384: fps: 199.63
+B_1280x384 r3 B_1280x384: fps: 202.00
+C_640x192 r3 C_640x192: fps: 364.82
+D_640x192 r3 D_640x192: fps: 418.38
+D_640x192_perfmax r3 D_640x192: fps: 499.95
+temp=37.8'C
+throttled=0x0

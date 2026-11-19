@@ -1,0 +1,37 @@
+nohup: ignoring input
+== A_1280x384
+Car              99.98     98.43     95.74   (Moderate GT 1076)
+Pedestrian       93.98     92.96     90.35   (Moderate GT 241)
+Cyclist          97.34     99.15     95.54   (Moderate GT 80)
+mAP              97.10     96.85     93.88
+
+>>> 공식 점수 (Moderate AP40, 3클래스 평균): 96.85   [5.8s]
+== B_1280x384
+Car              99.80     97.78     96.34   (Moderate GT 1076)
+Pedestrian       94.86     93.37     91.08   (Moderate GT 241)
+Cyclist          99.73     97.58     94.93   (Moderate GT 80)
+mAP              98.13     96.24     94.12
+
+>>> 공식 점수 (Moderate AP40, 3클래스 평균): 96.24   [5.5s]
+== C_640x192
+Car              99.57     95.24     93.01   (Moderate GT 1076)
+Pedestrian       91.73     87.49     84.73   (Moderate GT 241)
+Cyclist          94.04     87.76     83.86   (Moderate GT 80)
+mAP              95.11     90.16     87.20
+
+>>> 공식 점수 (Moderate AP40, 3클래스 평균): 90.16   [5.6s]
+== D_640x192
+Car              99.80     95.25     91.84   (Moderate GT 1076)
+Pedestrian       95.19     87.82     83.89   (Moderate GT 241)
+Cyclist          94.89     88.38     83.34   (Moderate GT 80)
+mAP              96.63     90.48     86.36
+
+>>> 공식 점수 (Moderate AP40, 3클래스 평균): 90.48   [5.6s]
+== D_640x192_perfmax
+Car              99.80     95.25     91.84   (Moderate GT 1076)
+Pedestrian       95.19     87.82     83.89   (Moderate GT 241)
+Cyclist          94.89     88.38     83.34   (Moderate GT 80)
+mAP              96.63     90.48     86.36
+
+>>> 공식 점수 (Moderate AP40, 3클래스 평균): 90.48   [5.6s]
+ALL_DONE
