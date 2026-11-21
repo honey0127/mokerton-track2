@@ -286,8 +286,8 @@ def dets_to_kitti(dets):
 class ResourceMonitor:
     """0.25초마다 /proc·sysfs 에서 읽는다 (Linux 전용, 다른 OS 면 비어 있는 결과)."""
 
-    def __init__(self, period=0.25):
-        self.period, self.samples = period, []
+    def __init__(self, period=0.25, counter=None):
+        self.period, self.samples, self.counter = period, [], counter   # counter(): 지금까지 처리한 장수 (선택)
         self._stop = threading.Event()
         self.ok = Path("/proc/self/stat").exists()
         self.clk = os.sysconf("SC_CLK_TCK") if self.ok else 100
@@ -331,7 +331,8 @@ class ResourceMonitor:
                 "t": t1,
                 "proc_cpu_pct": 100 * (pc1 - pc0) / dt,                    # 100% = 코어 1개
                 "sys_cpu_pct": 100 * (1 - (idle1 - idle0) / max(tot1 - tot0, 1)),   # 100% = 전체 코어
-                "rss_mb": self._rss_mb(), "temp_c": self._temp()})
+                "rss_mb": self._rss_mb(), "temp_c": self._temp(),
+                **({"n_done": self.counter()} if self.counter else {})})
             tot0, idle0, pc0, t0 = tot1, idle1, pc1, t1
 
     def __enter__(self):

@@ -21,6 +21,7 @@ export GT=<KITTI training/label_2 폴더>  # ap 모드에만 필요
 
 bash hailo/run_board_final.sh check     # 2분. 마지막 줄 '결과: 일치' 확인
 bash hailo/run_board_final.sh sweep     # 15~20분
+bash hailo/run_board_final.sh best      # 10분 (최고 조합 3회 반복)
 bash hailo/run_board_final.sh ap        # 10~15분
 bash hailo/run_board_final.sh demo      # 1분
 ```
@@ -29,7 +30,7 @@ bash hailo/run_board_final.sh demo      # 1분
 - `wait_for_async_ready` / `run_async` / `get_async_queue_size` 인자 이름 (HailoRT 버전마다 조금 다름)
 - `--out-format raw` 의 `quant_info` 필드 이름
 
-끝나면 `hailo/results/board/final/` 폴더를 커밋·푸시 (`runs/` 의 예측 덤프는 올리지 않음).
+끝나면 `python3 hailo/summarize_final.py` (서버 vs 엣지 표 + 규칙 판정 -> `SUMMARY.md`) 후 `hailo/results/board/final/` 폴더를 커밋·푸시 (`runs/` 의 예측 덤프는 올리지 않음).
 
 **확인할 것 — 보드 holdout 값이 에뮬레이터와 다른 이유**: 11/19 의 `ap_board.txt` 를 만들 때 conf 를 얼마로
 덤프했는지 (06 의 기본값은 0.25, 채점용은 0.001). `ap` 모드 결과(conf 0.001)가 에뮬레이터 값(A 96.50, B 96.03,
@@ -52,16 +53,26 @@ python3 hailo/08_demo.py --models hailo/hef/B_1280x384.hef,hailo/hef/D_640x192.h
 지금 HEF 는 `optimization_level=0` (가장 가벼운 설정, 보정 이미지 실제 64장 사용). Hailo INT8 손실이
 holdout 에서 A −0.72, B −1.14, C −1.87, D −1.23. 같은 보정 목록(256장)으로 아래 변형을 만든다.
 
-| 이름 | `model_script.alls` 에서 바꿀 줄 | 기대 |
-|---|---|---|
-| Q1 | `model_optimization_flavor(optimization_level=1, compression_level=0)` + `model_optimization_config(calibration, calibset_size=256)` | equalization. CPU 로도 수십 분 |
-| Q2 | Q1 + 박스 출력층(cv2.*.2 에 해당하는 conv) 16비트: `quantization_param([<층 이름들>], precision_mode=a16_w16)` | 예선 분석에서 640x192 Car 손실 원인이 박스 경로였다 |
-| Q3 | `optimization_level=2` (CPU 에서 너무 오래 걸리면 생략) | finetune 포함 |
+`hailo/09_requant.py` 가 parse 된 HAR(`hailo_out/<모델>/<모델>.har`)에서 양자화 설정만 바꿔 다시 만든다.
 
-- 층 이름은 `hailo_out/<모델>/` 의 HAR 에서 확인 (`hailo har info` 또는 profile.html 의 출력층 목록).
-  16비트 문법은 DFC 5.4 문서의 `quantization_param` / `precision_mode` 항목으로 확인.
-- 모델당 순서: `04_emulate_eval.py --context quantized` 로 holdout 채점 → 현재보다 +0.30 이상이면 compile 해서
-  HEF 를 `hailo/hef/<모델>_<Q이름>.hef` 로 올리기. 보드에서 07 로 FPS·holdout 을 다시 재서 규칙(DECISION_FINAL.md 2번)으로 판정.
+| 이름 | 바뀌는 설정 | 기대 |
+|---|---|---|
+| Q1 | `optimization_level=1` (equalization), 보정 256장 전부 사용 | CPU 로도 수십 분 |
+| Q2 | Q1 + 박스 출력 conv(64채널) 16비트 (`a16_w16`) | 예선 분석에서 640x192 Car 손실 원인이 박스 경로였다 |
+| Q3 | `optimization_level=2` (finetune 포함) | CPU 에서 너무 오래 걸리면 생략 |
+
+```bash
+conda activate hailo-dfc
+python hailo/09_requant.py --har hailo_out/D_640x192/D_640x192.har --list                      # 출력층 이름 확인
+python hailo/09_requant.py --har hailo_out/D_640x192/D_640x192.har --calib calib_D_256.npy --variant Q1
+python hailo/04_emulate_eval.py --har hailo_out/D_640x192/D_640x192_Q1_optimized.har --repo . \
+    --images <holdout 이미지> --gt <label_2> --split splits/holdout.txt --context quantized --tag D_Q1_q
+# 현재(D 90.44, B 96.03, A 96.50, C 90.54)보다 +0.30 이상이면
+python hailo/09_requant.py --har hailo_out/D_640x192/D_640x192_Q1_optimized.har --compile hailo/hef/D_640x192_Q1.hef
+```
+- 새 HEF 는 `hailo/hef/` 에 올리고 `HEF.sha256` 갱신. 보드에서는 `MODELS="D_640x192_Q1" bash hailo/run_board_final.sh sweep`
+  → `best` → `ap` 로 재고, `python3 hailo/summarize_final.py` 가 규칙(DECISION_FINAL.md 2번)대로 판정한다.
+- 09 는 DFC 없이 작성해서 아직 돌려보지 않았다. 명령 이름이 다르면 에러를 그대로 보내주세요.
 - 우선순위: **D, B 먼저** (예선 주력), 시간 되면 A, C.
 
 ## C. 일정

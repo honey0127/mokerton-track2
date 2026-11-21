@@ -201,6 +201,7 @@ def main():
     ap.add_argument("--seconds", type=float, default=20, help="--headless 일 때 실행 시간")
     ap.add_argument("--save", default=None, help="mp4 녹화 경로")
     ap.add_argument("--fullscreen", action="store_true")
+    ap.add_argument("--stats-csv", default=None, help="0.5초마다 CPU·RSS·온도·누적 장수 기록 (발열 장시간 시험용)")
     a = ap.parse_args()
 
     import cv2
@@ -244,7 +245,7 @@ def main():
             state["runner"].submit(fr, t_cap, on_result)
     fth = threading.Thread(target=feeder, daemon=True)
 
-    with ResourceMonitor(period=0.5) as mon:
+    with ResourceMonitor(period=0.5, counter=lambda: stats["n"]) as mon:
         t_start = time.perf_counter()
         fth.start()
         while True:
@@ -296,6 +297,17 @@ def main():
         writer.release()
     if not a.headless:
         cv2.destroyAllWindows()
+    if a.stats_csv:
+        import csv
+        with open(a.stats_csv, "w", newline="") as fh:
+            w = csv.writer(fh); w.writerow(["sec", "fps_0.5s", "proc_cpu_pct", "sys_cpu_pct", "rss_mb", "temp_c"])
+            prev_t, prev_n = t_start, 0
+            for r in mon.samples:
+                n = r.get("n_done", 0)
+                w.writerow([round(r["t"] - t_start, 1), round((n - prev_n) / max(r["t"] - prev_t, 1e-6), 1),
+                            round(r["proc_cpu_pct"], 1), round(r["sys_cpu_pct"], 1), round(r["rss_mb"], 1), r["temp_c"]])
+                prev_t, prev_n = r["t"], n
+        print("기록:", a.stats_csv)
     s = mon.summary()
     print(f"[demo] {Path(paths[cur]).name} | {stats['n']}장 / {t_end - t_start:.1f}s = {stats['n'] / (t_end - t_start):.1f} FPS "
           f"| NPU p50 {np.median(npu_ms) if npu_ms else float('nan'):.1f} ms | E2E p50 "
